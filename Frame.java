@@ -71,38 +71,41 @@ public class Frame {
 			
 			System.out.print("\n");
 			
-/*			System.out.println("Are you happy with your tiles? (Y/N)");
+			System.out.println("Do you want to swap (1)/ reset tiles (2) or play game (3)?");
 			Scanner r = new Scanner(System.in);
-			String removal = r.nextLine();
+			int removal = r.nextInt();
 			
-			if(removal == "n" || removal == "N") {
-				System.out.println("you may remove tiles");
-				//swap();
+			if(removal == 1) {
+				System.out.println("you may remove tiles, select tile number");
+				
+				Scanner s = new Scanner(System.in);
+				int swap = s.nextInt();
+				
+				swap(Frame, Frame[swap]);
 			}
-			else if(removal == "y" || removal == "Y") {
+			else if(removal == 2) {
+				System.out.println("you may reset tiles");
+				reset(Frame);
+			}
+			else if(removal == 3) {
 				System.out.println("play game!");
 			}
-			else {
-				System.out.println("unsure...");
-			}
-	*/			
+				
 		}
 		
 	}
 	
-	public void swap(char[] frameDisplay, char letter) {
+	public static void swap(char[] frameDisplay, char letter) {
 			
 		Pool pool;
 		
 	}
 	
-	public void reset(char[] frameDisplay) {
-		
+	public static void reset(char[] frameDisplay) {
+		Pool pool;
 	}
 	
 	public static void main(String[] args) {
-		
-		
 		
 		Display();
 
