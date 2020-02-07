@@ -10,8 +10,12 @@ public class Frame {
 
     public Frame() {
         frame = new char[7];
-        frame = pool.assignToFrame();
+        //frame = pool.assignToFrame();
 
+    }
+
+    public void assignTilesToFrame(){
+        frame = pool.assignToFrame();
     }
 
     public char[] getFrame() {
