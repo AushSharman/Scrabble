@@ -3,6 +3,7 @@ import java.util.*;
 public class Pool {
     private static Tiles tileObj = new Tiles();
     private static LinkedList<Tiles> numberOfTilesInPool;
+    private static Frame frame = new Frame();
     private int[] letterCount = new int[]{9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1, 2};    //Number OF tiles
 
 
@@ -52,12 +53,22 @@ public class Pool {
     }
 
     private void tileLimit(Tiles tile) {
-        if (tile.getLetterValue() <= 0) {
+        if (tile.getLetterValue() < 0) {
             throw new IllegalArgumentException("Cannot access anymore Tile " + tile.getLetter() + " as it doesn't exist " + tile.getLetterValue());
         }
     }
     //a validation method of sorts - checks to see if the number of tiles in letterCount array is not 0
 
+
+    public void swap(int numberOfSwaps) {
+        for (int i = 0; i < numberOfSwaps; i++) {
+            int random = (int) (Math.random() * numberOfTilesInPool.size());
+            Tiles tiles = numberOfTilesInPool.get(random);
+            tileLimit(tiles);
+            frame.getFrame()[i] = tiles.getLetter();
+            reduceTileCount(tiles.getLetter());
+        }
+    }
 
     public void addTileBack(char letter) {}
 
@@ -70,19 +81,8 @@ public class Pool {
 
     }
 
-    public void swap(char[] frame, int numberOfSwaps) {
-        for (int i = 0; i < frame.length; i++) {
-            if (frame[i] == 0) {
-                int random = (int) (Math.random() * numberOfTilesInPool.size());
-                Tiles tiles = numberOfTilesInPool.get(random);
-                tileLimit(tiles);
-                frame[i] = tiles.getLetter();
-                reduceTileCount(tiles.getLetter());
-            }
-        }
-    }
     //This function takes the frame and alters it and doesn't return anything.... Used in the Frame class by a PoolObj
-    //Checks to see if any tile in the array is not set to 0 ... if yes - then access to random tile;
+    //Checks to  see if any tile in the array is not set to 0 ... if yes - then access to random tile;
 
     protected void reduceTileCount(char letter) {
         for (Tiles tiles : numberOfTilesInPool) {
