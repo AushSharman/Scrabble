@@ -39,12 +39,17 @@ public class PlayerTest
         //Test to see whether the reduceTile method works
         pool.reduceTileCount('Z');
         System.out.println(pool.getLetterCount('Z') == 0);
+        
         //Frame Tests :
         System.out.println(frame);
         //Test to swap first 4 tiles on frame
         frame.swap(frame, 4);
         System.out.println(frame);
         System.out.println("");
+        
+        //Test to check if frame is empty
+      	System.out.println(frame.IsFrameEmpty());
+      	System.out.println("");
 
         //Player Tests :
         //Displaying Player Names :
