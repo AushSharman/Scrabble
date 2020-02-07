@@ -1,34 +1,33 @@
-//updated Frame
 
-
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Frame {
 
-	private static char [] Frame = {'a', 'a', 'b', 'c', 'e', 'r', 's'};
-	private Pool pool;
+	private static char [] frame;
+	private Pool pool = new Pool();
 	private Player player;
 
 	
 	public Frame() {
-		
-		Frame = new char[7];
+		frame = new char[7];
+		frame = pool.assignToFrame();
 		
 	}
 
 	public char[] getFrame() {
-		return Frame;
+		return frame;
 	}
 
 	public void setFrame(char[] frame) {
-		Frame = frame;
+		frame = frame;
 	}
 
 	
 	
 	public static boolean IsFrameEmpty() {
 		
-		if(Frame == null) {
+		if(frame == null) {
 			System.out.println("Frame is Empty");
 			return false;
 		}
@@ -44,27 +43,27 @@ public class Frame {
 		if(IsFrameEmpty() == false) {
 			
 			System.out.println("Frame is not full! Access the Pool.");
-			Pool pool;
 			
 		}
 		else {
 			//else if frame has at least 1 tile, check amount 
 			
-			System.out.println("Frame has: "+ Frame.length + " tile(s)");
+			System.out.println("Frame has: "+ frame.length + " tile(s)");
 		}
+		
 		
 		//frame should never be over 7, exception
-		if(Frame.length > 7) {
+		if(frame.length > 7) {
 			throw new RuntimeException("Frame is too big!");
 		}
-		
+	
 		//if frame is full
-		if(Frame.length == 7) {
+		if(frame.length == 7) {
 			System.out.println("Frame: ");
 			
 			//prints all tiles
-			for(int i = 0; i < Frame.length; i++) {
-			System.out.print("[" + Frame[i] + "]");
+			for(int i = 0; i < frame.length; i++) {
+			System.out.print("[" + frame[i] + "]");
 			}
 			
 			System.out.print("\n");
@@ -79,11 +78,11 @@ public class Frame {
 				Scanner s = new Scanner(System.in);
 				int swap = s.nextInt();
 				
-				swap(Frame, Frame[swap]);
+				//swap(Frame, 2);
 			}
 			else if(removal == 2) {
 				System.out.println("you may reset tiles");
-				reset(Frame);
+				reset(frame);
 			}
 			else if(removal == 3) {
 				System.out.println("play game!");
@@ -93,18 +92,28 @@ public class Frame {
 		
 	}
 	
-	public static void swap(char[] frameDisplay, char letter) {
+	public void swap(char[] frameDisplay, int NumberOfLetter) {
 			
-		Pool pool;
+		pool.swap(frameDisplay, NumberOfLetter);
 		
 	}
 	
 	public static void reset(char[] frameDisplay) {
-		Pool pool;
+		
+		Arrays.fill(frame, ' ');
+		
+		for(int i = 0; i < frame.length; i++) {
+			System.out.print("[" + frame[i] + "]");
+			}
+		
+		//Pool pool;
+		
 	}
 	
 	public static void main(String[] args) {
 		
+		//Frame frame1 = new Frame();
+		//Arrays.toString(frame1);
 		Display();
 
 	}
