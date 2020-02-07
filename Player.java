@@ -43,10 +43,7 @@ public class Player
     }
 
     //Displaying Player Score :
-    public static void displayPlayerScore()
-    {
-
-    }
+    public static void displayPlayerScore(){}
 
     //method to trigger the randomly select method
     //that allow each player to randomly select tiles from the pool .
@@ -63,17 +60,18 @@ public class Player
 
     public static void main(String[] args)
     {
-       // Frame frame = new Frame();
-        //Pool pool = new Pool();
         Player player1 = new Player("Daiana");
         Player player2 = new Player("Suzane");
 
+        System.out.println(pool.getTotalTiles());
         //Test 1 : Displaying Player Names :
         player1.displayPlayerData();
         player1.playerFrameDisplay();
 
         player2.displayPlayerData();
         player2.playerFrameDisplay();
+
+        player1.getFrame().swap(player1.getFrame(), 5);
 
         //Test 2 : Reset Player Data :
         //playerNameReset();

@@ -1,3 +1,4 @@
+
 import java.util.*;
 
 public class Pool {
@@ -53,6 +54,15 @@ public class Pool {
         return numberOfTilesInPool.isEmpty();
     }
 
+
+    public int getNumberOfTilesLeft(char tile){
+        for (Tiles tiles : numberOfTilesInPool){
+            if (tiles.getLetter() == tile){
+                return tiles.getLetterValue();
+            }
+        }
+        return 0;
+    }
      private static void tileLimit(Tiles tile) {
         if (tile.getLetterValue() < 0) {
             throw new IllegalArgumentException("Cannot access anymore Tile " + tile.getLetter() + " as it doesn't exist " + tile.getLetterValue());
@@ -73,12 +83,13 @@ public class Pool {
 
     public void addTileBack(char letter) {}
 
-    public int getLetterCount(char letter){
-        return letterCount[Character.toUpperCase(letter) - 'A'];
-    }
 
     public void setLetterCount(char letter, int value){
+        if (value < 0){
+            throw new IllegalArgumentException("Invalid value setting");
+        }
         tileLimit(new Tiles(letter, value));
+        letterCount[Character.toUpperCase(letter) - 'A'] = value;
 
     }
 
@@ -91,6 +102,12 @@ public class Pool {
                 tiles.setLetterValue(tiles.getLetterValue() - 1);
                 break;
             }
+        }
+    }
+
+    public void reduceTiles(char []frame){
+        for(int i = 0; i < frame.length; i++){
+            reduceTileCount(frame[i]);
         }
     }
     //Whenever Player takes tiles out, reduce the tile count from the array
@@ -120,13 +137,6 @@ public class Pool {
             i.append(tiles.getLetter()).append(" has ").append(tiles.getLetterValue()).append(" tiles in the bag").append("\n");
         }
         return i.toString();
-    }
-
-    public static void main(String[] args) {
-        Pool i = new Pool();
-        System.out.println(i);
-        System.out.println(i.getTotalTiles());
-
     }
 
 

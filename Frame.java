@@ -19,7 +19,7 @@ public class Frame {
     }
 
     public void setFrame(char[] frame) {
-        this.frame = frame;
+        pool.reduceTiles(frame);
     }
 
 
@@ -115,12 +115,5 @@ public class Frame {
         return res;
     }
 
-    public static void main(String[] args) {
-        Frame frame1 = new Frame();
-        System.out.println(frame1);
-        frame1.swap(frame1, 4);
-        System.out.println(frame1);
-
-    }
 
 }
