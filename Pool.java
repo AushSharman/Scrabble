@@ -1,10 +1,9 @@
-import java.util.LinkedList;
 
-//Ayush Sharma .
+//GrandNeedleWorker - ayush sharma
+import java.util.*;
 
-public class Pool 
-{
-	private  Tiles tileObj = new Tiles();
+public class Pool {
+    private  Tiles tileObj = new Tiles();
     private static LinkedList<Tiles> numberOfTilesInPool;
     //private  Frame frame;
     private int[] letterCount = new int[]{9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1, 2};    //Number OF tiles
@@ -57,14 +56,6 @@ public class Pool
     }
 
 
-    public int getNumberOfTilesLeft(char tile){
-        for (Tiles tiles : numberOfTilesInPool){
-            if (tiles.getLetter() == tile){
-                return tiles.getLetterValue();
-            }
-        }
-        return 0;
-    }
 
      private static void tileLimit(Tiles tile) {
         if (tile.getLetterValue() < 0) {
@@ -84,20 +75,8 @@ public class Pool
         }
     }
 
-    public void addTileBack(char letter) {}
+   // public void addTileBack(char letter) {}
 
-
-    public void setLetterCount(char letter, int value){
-        if (value < 0){
-            throw new IllegalArgumentException("Invalid value setting");
-        }
-        tileLimit(new Tiles(letter, value));
-        letterCount[Character.toUpperCase(letter) - 'A'] = value;
-
-    }
-
-    //This function takes the frame and alters it and doesn't return anything.... Used in the Frame class by a PoolObj
-    //Checks to  see if any tile in the array is not set to 0 ... if yes - then access to random tile;
 
     protected  void reduceTileCount(char letter) {
         for (Tiles tiles : numberOfTilesInPool) {
@@ -115,6 +94,14 @@ public class Pool
     }
     //Whenever Player takes tiles out, reduce the tile count from the array
 
+    public int getLetterCount(char letter){
+        for (Tiles tiles : numberOfTilesInPool){
+            if (tiles.getLetter() == letter){
+                return tiles.getLetterValue();
+            }
+        }
+        return 0;
+    }
 
     public  char[] assignToFrame() {
         char[] returnArray = new char[7];
@@ -141,5 +128,6 @@ public class Pool
         }
         return result;
     }
+
 
 }
