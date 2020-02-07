@@ -6,16 +6,10 @@ public class Frame {
     private Pool pool = new Pool();;
     private char [] frame;
 
-
-
     public Frame() {
         frame = new char[7];
-        //frame = pool.assignToFrame();
-
-    }
-
-    public void assignTilesToFrame(){
         frame = pool.assignToFrame();
+
     }
 
     public char[] getFrame() {
@@ -23,9 +17,8 @@ public class Frame {
     }
 
     public void setFrame(char[] frame) {
-        pool.reduceTiles(frame);
+        this.frame = frame;
     }
-
 
     public  boolean IsFrameEmpty() {
 
@@ -48,9 +41,9 @@ public class Frame {
 
         }
         else {
-            //else if frame has at least 1 tile, check amount
+          //else if frame has at least 1 tile, check amount
 
-            System.out.println("Frame has: "+ frame.length + " tile(s)");
+          System.out.println("Frame has: "+ frame.length + " tile(s)");
         }
 
 
@@ -80,7 +73,6 @@ public class Frame {
                 Scanner s = new Scanner(System.in);
                 int swap = s.nextInt();
 
-                //swap(Frame, 2);
             }
             else if(removal == 2) {
                 System.out.println("you may reset tiles");
@@ -107,7 +99,6 @@ public class Frame {
             System.out.print("[" + frame[i] + "]");
         }
 
-        //Pool pool;
 
     }
 
@@ -119,5 +110,12 @@ public class Frame {
         return res;
     }
 
+    public static void main(String[] args) {
+        Frame frame1 = new Frame();
+        System.out.println(frame1);
+        frame1.swap(frame1, 4);
+        System.out.println(frame1);
+
+    }
 
 }
