@@ -3,99 +3,83 @@ import java.util.Scanner;
 
 public class Player 
 {
-	//instance variables :
-	private static int numberOfPlayers;
-	private static String[] playerName = new String[4];
-	//private Frame playerFrame;
-	//private Pool pool;
+	//Instance Variables :
+	private String playerName;
+	private static int playerScore = 0;
+	private Frame playerFrame;
+	private Pool pool;
 	
-	//constructor :
-	public Player()
+	//Constructor :
+	public Player(String playerName , Frame playerFrame)
 	{
-
+		this.playerName = playerName;
+		this.playerFrame = playerFrame;
+		this.pool = pool;
 	}
 	
-	//Getting Player Names :
-	public static void getPlayerNames()
+	//Getting Player Name :
+	public String getPlayerName()
 	{
-		System.out.println("Enter Number of Players : ");
-		Scanner sc = new Scanner(System.in);
-		numberOfPlayers = sc.nextInt();
-		
-		if(numberOfPlayers == 1 || numberOfPlayers > 4)
-		{
-			System.out.println("Number of players not valid . ");
-		}
-		
-		else
-		{
-			for(int i = 0; i < numberOfPlayers; i++)
-			{
-				System.out.println("Enter player name : ");
-				Scanner input = new Scanner(System.in);
-				playerName[i] = input.nextLine();
-			}
-		}
+		return playerName;
 	}
 	
-	//Displaying Player Names :
-	public static void displayPlayerName()
+	//Getting Player Frame :
+	public Frame getFrame()
 	{
-		switch(numberOfPlayers)
-		{
-			case 2 :
-			{
-				System.out.println("Player One : " + playerName[0]);
-				System.out.println("Player Two : " + playerName[1]);
-				break;
-			}
-			
-			case 3 :
-			{
-				System.out.println("Player One : " + playerName[0]);
-				System.out.println("Player Two : " + playerName[1]);
-				System.out.println("Player Three : " + playerName[2]);
-				break;
-			}
-			
-			case 4 :
-			{
-				System.out.println("Player One : " + playerName[0]);
-				System.out.println("Player Two : " + playerName[1]);
-				System.out.println("Player Three : " + playerName[2]);
-				System.out.println("Player Four : " + playerName[3]);
-				break;
-			}
-			
-			default :
-			{
-				System.out.println("Names not found . ");
-				break;
-			}
-		}
+		return playerFrame;
+	}
+	
+	//Displaying Player Frame :
+	public void playerFrameDisplay()
+	{
+		playerFrame.Display();
+		playerFrame.getFrame();
+	}
+	
+	//Displaying Player Data (Name , Score) :
+	public void displayPlayerData()
+	{
+		System.out.println("Player Name : " + playerName);
+		System.out.println("Player Score : " + playerScore);
+	}
+	
+	//Displaying Player Score :
+	public static void displayPlayerScore()
+	{
+		
+	}
+	
+	//method to trigger the randomly select method 
+	//that allow each player to randomly select tiles from the pool .
+	public void playerToFrame()
+	{
+		pool.assignToFrame();
 	}
 	
 	//Resetting Player Names :
 	public static void playerNameReset()
 	{
-		Arrays.fill(playerName,null);
+		String playerName = "";
 	}
 	
-	//access to the player's frame :
-	//public Frame getFrame()
-	
-	//Player Score :
-	//public Pool getPoints()
-	
 	public static void main(String[] args)
-	{
-		//Test 1 : Get Player Names :
-		getPlayerNames();
+	{	
+		Frame frame = new Frame();
+		Pool pool = new Pool();
+		Player player1 = new Player("Daiana",frame);
+		Player player2 = new Player("Suzane",frame);
 		
-		//Test 2 : Display Player Names :
-		displayPlayerName();
+		//Test 1 : Displaying Player Names :
+		player1.displayPlayerData();
+		player1.playerFrameDisplay();
 		
-		//Test 3 : Reset Player Names :
-		playerNameReset();
+		player2.displayPlayerData();
+		player2.playerFrameDisplay();
+		
+		//Test 2 : Reset Player Data :
+		//playerNameReset();
+		
+		//Test 3 : After Reset :
+		//displayPlayerData();
 	}
 }
