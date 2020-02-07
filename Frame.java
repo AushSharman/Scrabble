@@ -1,3 +1,5 @@
+//updated Frame
+
 
 import java.util.Scanner;
 
@@ -26,8 +28,6 @@ public class Frame {
 	
 	public static boolean IsFrameEmpty() {
 		
-	//	System.out.println("Frame isEmpty check");
-		
 		if(Frame == null) {
 			System.out.println("Frame is Empty");
 			return false;
@@ -39,8 +39,6 @@ public class Frame {
 
 	
 	public static void Display() {
-		
-	//IsFrameEmpty();
 		
 	//if frame is empty, access the pool
 		if(IsFrameEmpty() == false) {
