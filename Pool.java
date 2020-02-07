@@ -63,6 +63,7 @@ public class Pool {
         }
         return 0;
     }
+
      private static void tileLimit(Tiles tile) {
         if (tile.getLetterValue() < 0) {
             throw new IllegalArgumentException("Cannot access anymore Tile " + tile.getLetter() + " as it doesn't exist " + tile.getLetterValue());
@@ -131,12 +132,12 @@ public class Pool {
     }
     //display the tiles in the bag
 
-    public String toString(){
-        StringBuilder i = new StringBuilder();
-        for(Tiles tiles : numberOfTilesInPool){
-            i.append(tiles.getLetter()).append(" has ").append(tiles.getLetterValue()).append(" tiles in the bag").append("\n");
+    public String toString() {
+        String result = "";
+        for (Tiles tiles : numberOfTilesInPool){
+            result += tiles.getLetter() + " has " + tiles.getLetterValue() + "\n";
         }
-        return i.toString();
+        return result;
     }
 
 
