@@ -1,14 +1,15 @@
 import java.util.*;
 
 public class Pool {
-    private static Tiles tileObj = new Tiles();
+    private  Tiles tileObj = new Tiles();
     private static LinkedList<Tiles> numberOfTilesInPool;
-    private static Frame frame = new Frame();
+    //private  Frame frame;
     private int[] letterCount = new int[]{9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1, 2};    //Number OF tiles
 
 
     public Pool() {
         numberOfTilesInPool = new LinkedList<Tiles>();
+        //frame = new Frame();
         createTilePoint();
     }
 
@@ -52,7 +53,7 @@ public class Pool {
         return numberOfTilesInPool.isEmpty();
     }
 
-    private void tileLimit(Tiles tile) {
+     private static void tileLimit(Tiles tile) {
         if (tile.getLetterValue() < 0) {
             throw new IllegalArgumentException("Cannot access anymore Tile " + tile.getLetter() + " as it doesn't exist " + tile.getLetterValue());
         }
@@ -60,7 +61,7 @@ public class Pool {
     //a validation method of sorts - checks to see if the number of tiles in letterCount array is not 0
 
 
-    public void swap(int numberOfSwaps) {
+    public  void swap(Frame frame, int numberOfSwaps) {
         for (int i = 0; i < numberOfSwaps; i++) {
             int random = (int) (Math.random() * numberOfTilesInPool.size());
             Tiles tiles = numberOfTilesInPool.get(random);
@@ -84,7 +85,7 @@ public class Pool {
     //This function takes the frame and alters it and doesn't return anything.... Used in the Frame class by a PoolObj
     //Checks to  see if any tile in the array is not set to 0 ... if yes - then access to random tile;
 
-    protected void reduceTileCount(char letter) {
+    protected  void reduceTileCount(char letter) {
         for (Tiles tiles : numberOfTilesInPool) {
             if (tiles.getLetter() == Character.toUpperCase(letter)) {
                 tiles.setLetterValue(tiles.getLetterValue() - 1);
@@ -95,7 +96,7 @@ public class Pool {
     //Whenever Player takes tiles out, reduce the tile count from the array
 
 
-    public char[] assignToFrame() {
+    public  char[] assignToFrame() {
         char[] returnArray = new char[7];
         for (int i = 0; i < 7; i++) {
             int random = (int) (Math.random() * numberOfTilesInPool.size());
@@ -124,6 +125,7 @@ public class Pool {
     public static void main(String[] args) {
         Pool i = new Pool();
         System.out.println(i);
+        System.out.println(i.getTotalTiles());
 
     }
 

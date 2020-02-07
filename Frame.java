@@ -3,9 +3,9 @@ import java.util.Scanner;
 
 public class Frame {
 
-    private static char [] frame;
-    private Pool pool = new Pool();
-    private Player player;
+    private Pool pool = new Pool();;
+    private char [] frame;
+
 
 
     public Frame() {
@@ -19,15 +19,11 @@ public class Frame {
     }
 
     public void setFrame(char[] frame) {
-        frame = frame;
+        this.frame = frame;
     }
 
 
-    /*public void getTilesOnFrame(){
-        frame = pool.assignToFrame();
-    }*/
-
-    public static boolean IsFrameEmpty() {
+    public  boolean IsFrameEmpty() {
 
         if(frame == null) {
             System.out.println("Frame is Empty");
@@ -39,7 +35,7 @@ public class Frame {
     }
 
 
-    public static void Display() {
+    public  void Display() {
 
         //if frame is empty, access the pool
         if(IsFrameEmpty() == false) {
@@ -94,12 +90,12 @@ public class Frame {
 
     }
 
-    public void swap(int NumberOfLetter) {
+    public  void swap(Frame frame, int NumberOfLetter) {
 
-        pool.swap(NumberOfLetter);
+        pool.swap(frame, NumberOfLetter);
     }
 
-    public static void reset(char[] frameDisplay) {
+    public  void reset(char[] frameDisplay) {
 
         Arrays.fill(frame, ' ');
 
@@ -119,18 +115,11 @@ public class Frame {
         return res;
     }
 
-    public static void main(String[] args)
-    {
-
+    public static void main(String[] args) {
         Frame frame1 = new Frame();
-        //frame1.getTilesOnFrame();
         System.out.println(frame1);
-        System.out.println(frame1.pool.getTotalTiles());
-        frame1.swap(4);
+        frame1.swap(frame1, 4);
         System.out.println(frame1);
-        //frame1.swap(3);
-        //System.out.println(frame1);
-        //Display();
 
     }
 
