@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Frame {
 
-	private char [] Frame;
+	private static char [] Frame = {'a', 'a', 'b', 'c', 'e', 'r', 's'};
 	private Pool pool;
 	private Player player;
 
@@ -11,62 +11,6 @@ public class Frame {
 	public Frame() {
 		
 		Frame = new char[7];
-		
-		IsFrameEmpty();
-		
-		//checks the number of tiles
-		System.out.println("Frame has: "+ Frame.length + " tile(s)");
-		
-		//if frame is not full
-		if(Frame.length < 7) {
-			
-			System.out.println("Frame is not full! Access the Pool.");
-			
-			//while(FrameDisplay.length <= 7) {
-			
-				//shows current frame tiles
-				System.out.println("Frame: ");
-				for(int i = 0; i < Frame.length; i++) {
-					System.out.print(Frame[i] + " ");
-					
-					}
-				
-			}
-			
-	//	}
-		
-		//frame should never be over 7, exception
-		if(Frame.length > 7) {
-			throw new RuntimeException("Frame is too big!");
-		}
-		
-		//if frame is full
-		if(Frame.length == 7) {
-			System.out.println("Frame: ");
-			
-			//prints all tiles
-			for(int i = 0; i < Frame.length; i++) {
-			System.out.print(Frame[i] + " ");
-			}
-			
-			System.out.print("\n");
-			
-			System.out.println("Are you happy with your tiles? (Y/N)");
-			Scanner r = new Scanner(System.in);
-			String removal = r.nextLine();
-			
-			if(removal == "n" || removal == "N") {
-				System.out.println("you may remove tiles");
-				//swap();
-			}
-			else if(removal == "y" || removal == "Y") {
-				System.out.println("play game!");
-			}
-			else {
-				System.out.println("unsure...");
-			}
-				
-		}
 		
 	}
 
@@ -82,13 +26,67 @@ public class Frame {
 	
 	public static boolean IsFrameEmpty() {
 		
-		System.out.println("Frame isEmpty check");
-		return false;
+	//	System.out.println("Frame isEmpty check");
+		
+		if(Frame == null) {
+			System.out.println("Frame is Empty");
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
 	
 	public static void Display() {
 		
+	//IsFrameEmpty();
+		
+	//if frame is empty, access the pool
+		if(IsFrameEmpty() == false) {
+			
+			System.out.println("Frame is not full! Access the Pool.");
+			Pool pool;
+			
+		}
+		else {
+			//else if frame has at least 1 tile, check amount 
+			
+			System.out.println("Frame has: "+ Frame.length + " tile(s)");
+		}
+		
+		//frame should never be over 7, exception
+		if(Frame.length > 7) {
+			throw new RuntimeException("Frame is too big!");
+		}
+		
+		//if frame is full
+		if(Frame.length == 7) {
+			System.out.println("Frame: ");
+			
+			//prints all tiles
+			for(int i = 0; i < Frame.length; i++) {
+			System.out.print("[" + Frame[i] + "]");
+			}
+			
+			System.out.print("\n");
+			
+/*			System.out.println("Are you happy with your tiles? (Y/N)");
+			Scanner r = new Scanner(System.in);
+			String removal = r.nextLine();
+			
+			if(removal == "n" || removal == "N") {
+				System.out.println("you may remove tiles");
+				//swap();
+			}
+			else if(removal == "y" || removal == "Y") {
+				System.out.println("play game!");
+			}
+			else {
+				System.out.println("unsure...");
+			}
+	*/			
+		}
 		
 	}
 	
@@ -103,6 +101,8 @@ public class Frame {
 	}
 	
 	public static void main(String[] args) {
+		
+		
 		
 		Display();
 
