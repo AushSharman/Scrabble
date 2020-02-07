@@ -1,4 +1,7 @@
 import java.util.Arrays;
+
+//Daiana Morjolic .
+
 import java.util.Scanner;
 
 public class Player 
@@ -60,24 +63,5 @@ public class Player
 	public static void playerNameReset()
 	{
 		String playerName = "";
-	}
-	
-	public static void main(String[] args)
-	{	
-		Player player1 = new Player("Daiana");
-		Player player2 = new Player("Suzane");
-		
-		//Test 1 : Displaying Player Names :
-		player1.displayPlayerData();
-		player1.playerFrameDisplay();
-		
-		player2.displayPlayerData();
-		player2.playerFrameDisplay();
-		
-		//Test 2 : Reset Player Data :
-		//playerNameReset();
-		
-		//Test 3 : After Reset :
-		//displayPlayerData();
 	}
 }

@@ -1,9 +1,11 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Frame {
+//Suzanne Byrne .
 
-    private Pool pool = new Pool();;
+public class Frame 
+{
+	private Pool pool = new Pool();;
     private char [] frame;
 
     public Frame() {
@@ -109,13 +111,4 @@ public class Frame {
         }
         return res;
     }
-
-    public static void main(String[] args) {
-        Frame frame1 = new Frame();
-        System.out.println(frame1);
-        frame1.swap(frame1, 4);
-        System.out.println(frame1);
-
-    }
-
 }
