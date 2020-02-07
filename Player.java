@@ -10,11 +10,10 @@ public class Player
 	private Pool pool;
 	
 	//Constructor :
-	public Player(String playerName , Frame playerFrame)
+	public Player(String playerName)
 	{
 		this.playerName = playerName;
-		this.playerFrame = playerFrame;
-		this.pool = pool;
+		this.playerFrame = new Frame();
 	}
 	
 	//Getting Player Name :
@@ -29,7 +28,8 @@ public class Player
 		return playerFrame;
 	}
 	
-	//Displaying Player Frame :
+	//Displaying Player Frame 
+	//And selects 7 random tiles to the Frame .
 	public void playerFrameDisplay()
 	{
 		playerFrame.Display();
@@ -49,13 +49,6 @@ public class Player
 		
 	}
 	
-	//method to trigger the randomly select method 
-	//that allow each player to randomly select tiles from the pool .
-	public void playerToFrame()
-	{
-		pool.assignToFrame();
-	}
-	
 	//Resetting Player Names :
 	public static void playerNameReset()
 	{
@@ -64,10 +57,8 @@ public class Player
 	
 	public static void main(String[] args)
 	{	
-		Frame frame = new Frame();
-		Pool pool = new Pool();
-		Player player1 = new Player("Daiana",frame);
-		Player player2 = new Player("Suzane",frame);
+		Player player1 = new Player("Daiana");
+		Player player2 = new Player("Suzane");
 		
 		//Test 1 : Displaying Player Names :
 		player1.displayPlayerData();
