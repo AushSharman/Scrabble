@@ -107,6 +107,16 @@ public class Frame
         pool.swap(frame, NumberOfLetter);
     }
 
+    public void removeTile(char letter){
+        for (int tiles = 0; tiles < frame.length; tiles++){
+            if (frame[tiles] == letter){
+                frame[tiles] = 0;
+            }
+
+            }
+    }
+
+
     //reset function, empties the frame
     public  void reset(char[] frameDisplay) {
 
