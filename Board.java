@@ -21,7 +21,6 @@ public class Board
 		
 		for(row = 0; row < board.length; row++)
 		{
-			
 			System.out.print("|");
 			
 			for(column = 0; column < board[row].length; column++)
@@ -36,7 +35,6 @@ public class Board
 	}
 	
 	public void boardValue() {
-		
 		//Triple Word Score
 		if(row == 0 && column == 0 || row == 0 && column == 7 || row == 0 && column == 14 || row == 7 && column == 0 || row == 7 && column == 14 || row == 14 && column == 0 || row == 14 && column == 7 || row == 14 && column == 14) {
 			board[row][column] = '*';
@@ -66,19 +64,45 @@ public class Board
 	
 	//Getting tile input from user onto board :
 	public void getBoardInput()
+	throws IllegalArgumentException
 	{
 		Scanner input = new Scanner(System.in);
-		System.out.println("Enter word size : ");
-		wordSize = input.nextInt();
+		System.out.println("Select 1 to place word horizontally or select 2 to place word vertically : ");
+		int result = input.nextInt();
 		
-		for(int i = 0; i < wordSize; i++)
+		if(result == 1)
 		{
-			System.out.println("Enter position on board : ");
+			System.out.println("Enter word size : ");
+			wordSize = input.nextInt();
+			System.out.println("Enter row position on board : ");
 			row = input.nextInt();
+			System.out.println("Enter column position on board : ");
 			column = input.nextInt();
 			
-			System.out.println("Enter tiles : ");
-			board[row][column] = input.next().charAt(0);
+			for(int i = 0; i < wordSize; i++)
+			{
+				System.out.println("Enter tiles : ");
+				board[row][column] = input.next().charAt(0);
+				column++;
+			}
+			
+		}
+		
+		else if(result == 2)
+		{
+			System.out.println("Enter word size : ");
+			wordSize = input.nextInt();
+			System.out.println("Enter row position on board : ");
+			row = input.nextInt();
+			System.out.println("Enter column position on board : ");
+			column = input.nextInt();
+			
+			for(int j = 0; j < wordSize; j++)
+			{
+				System.out.println("Enter tiles : ");
+				board[row][column] = input.next().charAt(0);
+				row++;
+			}
 		}
 	}
 	
