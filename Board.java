@@ -36,7 +36,7 @@ public class Board {
             board[row][column] = ' ';
         }
         //Centre
-        else if ((row == 7 && column == 7) && board[row][column] == ' ') {
+        else if ((row == 7 && column == 7) && board[row][column] == 0) {
             board[row][column] = '!';
         }
         //Triple Letter Score
@@ -69,7 +69,14 @@ public class Board {
 			/*if (isTileOnFrame(tile)){
 				frame.removeTile(tile);
 			}*/
-            board[row - 1][col - 1] = tile;
+			if (i != 0) {
+                if (canTileBePlaced(row - 1, col - 1)) {
+                    board[row - 1][col - 1] = tile;
+                }
+            }
+			else{
+			    board[row-1][col-1] = tile;
+            }
             col++;
         }
     }
@@ -85,13 +92,41 @@ public class Board {
 			/*if (isTileOnFrame(tile)){
 				frame.removeTile(tile);
 			}*/
-            board[row - 1][col - 1] = tile;
+			if (j != 0) {
+                if (canTileBePlaced(row - 1, col - 1)) {
+                    board[row - 1][col - 1] = tile;
+                }
+            } else {
+			    board[row - 1][col - 1] = tile;
+            }
             row++;
         }
     }
 
+    public static char getTile(Board b, int row, int col){
+        return b.board[row-1][col-1] ;
+    }
+
+    private boolean checkRight(int row, int col){
+        return board[row][col + 1] == 0;
+    }
+    private boolean checkLeft(int row, int col){
+        return board[row][col-1] == 0;
+    }
+    private boolean checkUp(int row, int col){
+        return board[row-1][col] == 0;
+    }
+    private boolean checkDown(int row, int col){
+        return board[row+1][col] == 0;
+    }
+    private boolean canTileBePlaced(int row, int col){
+        if (checkRight(row, col) && checkLeft(row, col) && checkDown(row, col) && checkUp(row, col)){   //If all the conditions are true - meaning that the places around the tile are empty - therefore, cannot be placed
+            throw new IllegalArgumentException("Cannot place Tile as it does not connect ");
+        } return true;
+    }
+
     private void isTileInBound(int row, int col) {
-        if (row > 15 || col > 15) {
+        if (row > 15 || col > 15 || row < 1 || col < 1) {
             throw new IllegalArgumentException("The row or (And) column cannot be greater than the length of the board - which is 15x15 ");
         }
     }
@@ -126,9 +161,9 @@ public class Board {
         System.out.println(board[5][7]);
     }
 
-    private void firstTile(int row, int col) {
-        if (row != 7 && col != 7) {
-            throw new IllegalArgumentException("Cannot place Tile at any other place besides the Centre");
+    public static void firstTile(int row, int col) {
+        if (row-1 != 7 || col-1 != 7) {
+            throw new IllegalArgumentException("Cannot place Tile at any other place besides the Centre - [8, 8]");
         }
     }
 
@@ -145,14 +180,16 @@ public class Board {
     //Check that the tile placement is within the bounds of the board
     public static void main(String[] args) {
         Board board = new Board();
-        for (int i = 0; i < 2; i++){
-        	board.getBoardInput();
-		}
-        //board.boardDisplay();
-        board.tilePositionTestMethod();
+        for(int i = 0; i < 2; i++) {
+            board.getBoardInput();
+        }
+        board.boardDisplay();
+        //System.out.println(getTile(board, 8, 8));
     }
 
     // TODO: 20/02/2020 Check that the frame has the nessacary letters to place the tiles on the Board - Need to Test
-    // TODO: 20/02/2020 The tile placement is within the bounds of the board - Need to Test
-    // TODO: 20/02/2020 If the tile placed is on a multiplier then, overwrite the multiplier
+    // TODO: 20/02/2020 If the tile placed is on a multiplier then, overwrite the multiplier - Need Test
+    // TODO: 21/02/2020 Word conflicts with existing letter on the board
+    // TODO: 21/02/2020 if it is not the first word - then it connects with other letters - Need to check that the no spaces inbetween words
+    // TODO: 21/02/2020 it is not nessacary that the first tile placed must be on 8,8 - the 2nd or 3rd can be on it too
 }
