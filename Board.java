@@ -5,7 +5,8 @@ public class Board
 	//instance variables :
 	private char[][] board;
 	private Frame frame;
-	
+	private static boolean checked = true;
+
 	//Constructor :
 	public Board()
 	{
@@ -35,10 +36,10 @@ public class Board
 		}
 		//Double Word Score
 		else if((row == 1 && column == 1 || row == 1 && column == 13 || row == 2 && column == 2 || row == 2 && column == 12 || row == 3 && column == 3 || row == 3 && column == 11 || row == 4 && column == 4 || row == 4 && column == 10 || row == 10 && column == 4 || row == 10 && column == 10 || row == 11 && column == 3 || row == 11 && column == 11 || row == 12 && column == 2 || row == 12 && column == 12 || row == 13 && column == 1 || row == 13 && column == 13) && board[row][column] == 0) {
-			board[row][column] = '=';
+			board[row][column] = ' ';
 		}
 		//Centre
-		else if((row == 7 && column == 7) && board[row][column] == 0){
+		else if((row == 7 && column == 7) && board[row][column] == ' '){
 			board[row][column] = '!';
 		}
 		//Triple Letter Score
@@ -61,6 +62,10 @@ public class Board
 	}*/
 
 	public void setHorizontalTiles(Scanner input, int wordSize, int row, int col){
+		while (checked){
+			firstTile(row, col);
+			checked = false;
+		}
 		for (int i = 0; i < wordSize; i++){
 			System.out.println("Enter tiles : ");
 			char tile = input.next().charAt(0);
@@ -73,6 +78,10 @@ public class Board
 	}
 
 	public void setVerticalTiles(Scanner input, int wordSize, int row, int col){
+		while (checked){
+			firstTile(row, col);
+			checked = false;
+		}
 		for (int j = 0; j < wordSize; j++){
 			System.out.println("Enter tiles : ");
 			char tile = input.next().charAt(0);
@@ -109,19 +118,21 @@ public class Board
 		} else {
 			setVerticalTiles(input, wordSize, row, column);
 		}
-		}
+	}
 	
 	//TEST : ** TEMPORARY METHOD **
 	//Displaying tile on a given position .
 	public void tilePositionTestMethod() {
-		System.out.println("Current tile on position 1 2 : ");
-		System.out.println(board[1][2]);
-		System.out.println("Current tile on position 5 7 : ");
+		System.out.print("Current tile on position 1 2 : ");
+		System.out.println(board[1][1]);
+		System.out.print("Current tile on position 5 7 : ");
 		System.out.println(board[5][7]);
 	}
 
-	private void firstTile(){
-
+	private void firstTile(int row, int col){
+		if (row != 7 && col != 7){
+			throw new IllegalArgumentException("Cannot place Tile at any other place besides the Centre");
+		}
 	}
 	
 	//Board Reset :
@@ -129,15 +140,19 @@ public class Board
 		for(int row = 0; row < board.length; row++) {
 			for(int column = 0; column < board.length; column++) {
 				board[row][column] = ' ';
+
 			}
 		}
 	}
 
 	//Check that the tile placement is within the bounds of the board
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		Board board = new Board();
-		board.getBoardInput();
+		for (int i = 0; i < 2; i++){
+			board.getBoardInput();
+		}
 		board.boardDisplay();
+		board.tilePositionTestMethod();
 	}
 
 	// TODO: 20/02/2020 Check that the frame has the nessacary letters to place the tiles on the Board - Need to Test
