@@ -60,7 +60,7 @@ public class Board {
 
     public void setHorizontalTiles(Scanner input, int wordSize, int row, int col) {
         while (checked) {
-            firstTile(row, col);
+            firstTileH(row, col, wordSize);
             checked = false;
         }
         for (int i = 0; i < wordSize; i++) {
@@ -69,21 +69,14 @@ public class Board {
 			/*if (isTileOnFrame(tile)){
 				frame.removeTile(tile);
 			}*/
-			if (i != 0) {
-                if (canTileBePlaced(row - 1, col - 1)) {
-                    board[row - 1][col - 1] = tile;
-                }
-            }
-			else{
-			    board[row-1][col-1] = tile;
-            }
+			board[row-1][col-1] = tile;
             col++;
         }
     }
 
     public void setVerticalTiles(Scanner input, int wordSize, int row, int col) {
         while (checked) {
-            firstTile(row, col);
+            firstTileV(row, col, wordSize);
             checked = false;
         }
         for (int j = 0; j < wordSize; j++) {
@@ -92,13 +85,7 @@ public class Board {
 			/*if (isTileOnFrame(tile)){
 				frame.removeTile(tile);
 			}*/
-			if (j != 0) {
-                if (canTileBePlaced(row - 1, col - 1)) {
-                    board[row - 1][col - 1] = tile;
-                }
-            } else {
-			    board[row - 1][col - 1] = tile;
-            }
+			board[row - 1][col - 1] = tile;
             row++;
         }
     }
@@ -126,7 +113,7 @@ public class Board {
     }
 
     private void isTileInBound(int row, int col) {
-        if (row > 15 || col > 15 || row < 1 || col < 1) {
+        if (row > 15 && col > 15 || row < 1 && col < 1) {
             throw new IllegalArgumentException("The row or (And) column cannot be greater than the length of the board - which is 15x15 ");
         }
     }
@@ -161,10 +148,24 @@ public class Board {
         System.out.println(board[5][7]);
     }
 
-    public static void firstTile(int row, int col) {
-        if (row-1 != 7 || col-1 != 7) {
-            throw new IllegalArgumentException("Cannot place Tile at any other place besides the Centre - [8, 8]");
+    public static void firstTileH(int row, int col, int wordSize) {  //Row stays the same - Column changes
+        for(int i = 0; i < wordSize; i++){
+            if (row-1 == 7 && col-1 == 7){
+                return;
+            }
+            col++;
         }
+        throw new IllegalArgumentException("Can only place Tiles at position [8,8]");
+    }
+
+    public static void firstTileV(int row, int col, int wordSize){
+        for(int i = 0; i < wordSize; i++){
+            if (row-1 == 7 && col-1 == 7){
+                return;
+            }
+            row++;
+        }
+        throw new IllegalArgumentException("Can only place the Tile at Position [8,8]");
     }
 
     //Board Reset :

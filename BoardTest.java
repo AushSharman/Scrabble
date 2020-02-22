@@ -17,7 +17,7 @@ public class BoardTest
 		//When using the 2 words : CAR DOG 
 		//the expected results are :
 		System.out.println("Expected Results : A and G ");
-		board.tilePositionTestMethod();
+		//board.tilePositionTestMethod();
 		
 		//Reset Test :
 		board.boardReset();

@@ -112,8 +112,7 @@ public class Frame
             if (frame[tiles] == letter){
                 frame[tiles] = 0;
             }
-
-            }
+        }
     }
 
 
