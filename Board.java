@@ -2,13 +2,15 @@ import java.util.Scanner;
 
 public class Board {
     //instance variables :
-    private char[][] board;
-    private Frame frame;
+    private static char[][] board;
     private static boolean checked = true;
+    private static  boolean first = true;
+    private static Frame frame;
 
     //Constructor :
     public Board() {
-        this.board = new char[15][15];
+        board = new char[15][15];
+        frame = new Frame();
     }
 
     //Board Design Method :
@@ -49,14 +51,6 @@ public class Board {
         }
     }
 
-	/*public boolean isTileOnFrame(char tile){
-		for (char tiles : frame.getFrame()){
-			if (tiles == tile){
-				return true;
-			}
-		}
-		throw new IllegalArgumentException("You do not have the tile needed to place on the Board");
-	}*/
 
     public void setHorizontalTiles(Scanner input, int wordSize, int row, int col) {
         while (checked) {
@@ -66,54 +60,95 @@ public class Board {
         for (int i = 0; i < wordSize; i++) {
             System.out.println("Enter tiles : ");
             char tile = input.next().charAt(0);
-			/*if (isTileOnFrame(tile)){
-				frame.removeTile(tile);
-			}*/
-			board[row-1][col-1] = tile;
-            col++;
-        }
-    }
+            if (hasFrameTile(tile)) {
+                frame.removeTile(tile);
+                if (first) {
+                    board[row - 1][col - 1] = tile;
+                } else {
+                    canOverWrite(row - 1, col - 1, tile);
+                    if (checkingSpacesH(row - 1, col - 1, wordSize)) {
+                        board[row - 1][col - 1] = tile;
+                    }
+                }
+                col++;
+            }
+            else{
+                        throw new IllegalArgumentException("Cannot place tile as you dont have it");
+                    }
+                }
+            }
 
     public void setVerticalTiles(Scanner input, int wordSize, int row, int col) {
         while (checked) {
-            firstTileV(row, col, wordSize);
+            firstTileV(row, col, wordSize); //Check to see if it is the centre piece
             checked = false;
         }
         for (int j = 0; j < wordSize; j++) {
             System.out.println("Enter tiles : ");
             char tile = input.next().charAt(0);
-			/*if (isTileOnFrame(tile)){
-				frame.removeTile(tile);
-			}*/
-			board[row - 1][col - 1] = tile;
+            if (hasFrameTile(tile)) {
+                frame.removeTile(tile);
+                if (first) {
+                    board[row - 1][col - 1] = tile;
+                } else {
+                    canOverWrite(row - 1, col - 1, tile);
+                    if (checkingSpacesV(row - 1, col - 1, wordSize)) {
+                        board[row - 1][col - 1] = tile;
+                    }
+                }
+                row++;
+            } else{
+                throw new IllegalArgumentException("Cannot place tile as it is not in the Frmae");
+            }
+        }
+        }
+
+        public boolean hasFrameTile(char letter){   //Checks if the player frame has the tile
+            for (char tile : frame.getFrame()){
+                if (Character.toUpperCase(letter) == tile){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+    private boolean checkingSpacesV(int row, int col, int wordSize){  //Checks to see that if the tiles around the position aren't Letters - if so, then that means it isnt connected to any word and so throw an excpetion
+        boolean var = true;
+        for (int i = 0; i < wordSize; i++) {
+            if (!Character.isAlphabetic(board[row][col + 1]) && !Character.isAlphabetic(board[row + 1][col]) && !Character.isAlphabetic(board[row + 1][col + 1]) && !Character.isAlphabetic(board[row - 1][col]) && !Character.isAlphabetic(board[row + 1][col - 1]) && !Character.isAlphabetic(board[row][col - 1])) {
+                var = false;
+            }
             row++;
         }
+        return var;
     }
 
-    public static char getTile(Board b, int row, int col){
-        return b.board[row-1][col-1] ;
+    private boolean checkingSpacesH(int row, int col, int wordSize){  //Checks to see that if the tiles around the position aren't Letters - if so, then that means it isnt connected to any word and so throw an excpetion
+        boolean var = true;
+        for (int i = 0; i < wordSize; i++) {
+            if (!Character.isAlphabetic(board[row][col + 1]) && !Character.isAlphabetic(board[row + 1][col]) && !Character.isAlphabetic(board[row + 1][col + 1]) && !Character.isAlphabetic(board[row - 1][col]) && !Character.isAlphabetic(board[row + 1][col - 1]) && !Character.isAlphabetic(board[row][col - 1])) {
+                var = false;
+            }
+            col++;
+        }
+        return var;
     }
 
-    private boolean checkRight(int row, int col){
-        return board[row][col + 1] == 0;
+    public void canOverWrite(int row, int col, char tile){  //If the tile is a multiplier then you are allowed to overwrite it - provided that the tile you wish to overwrite is the same as the one you want to place
+        if (board[row][col] == '!' || board[row][col] == '@' || board[row][col] == '+' || board[row][col] == '*' || board[row][col] == '=' || board[row][col] == 0 || board[row][col] == tile){
+            board[row][col] = tile;
+            return;
+        }
+        throw new IllegalArgumentException("Cannot overwrite the tile " + board[row][col] + " with the tile " + tile);
     }
-    private boolean checkLeft(int row, int col){
-        return board[row][col-1] == 0;
+
+    public static char getTile( int row, int col){
+        return board[row-1][col-1] ;
     }
-    private boolean checkUp(int row, int col){
-        return board[row-1][col] == 0;
-    }
-    private boolean checkDown(int row, int col){
-        return board[row+1][col] == 0;
-    }
-    private boolean canTileBePlaced(int row, int col){
-        if (checkRight(row, col) && checkLeft(row, col) && checkDown(row, col) && checkUp(row, col)){   //If all the conditions are true - meaning that the places around the tile are empty - therefore, cannot be placed
-            throw new IllegalArgumentException("Cannot place Tile as it does not connect ");
-        } return true;
-    }
+
 
     private void isTileInBound(int row, int col) {
-        if (row > 15 && col > 15 || row < 1 && col < 1) {
+        if (row > 15 && col > 15 || row < 1 && col < 1 || row > 15 && col < 1 || row < 1 && col > 15) {
             throw new IllegalArgumentException("The row or (And) column cannot be greater than the length of the board - which is 15x15 ");
         }
     }
@@ -133,46 +168,41 @@ public class Board {
         column = input.nextInt();
         isTileInBound(row-1, column-1);
         if ((result == 1)) {
-            setHorizontalTiles(input, wordSize, row, column);
-        } else {
-            setVerticalTiles(input, wordSize, row, column);
+                setHorizontalTiles(input, wordSize, row, column);
         }
+            else {
+                setVerticalTiles(input, wordSize, row, column);
+            }
+        first = false;
     }
 
-    //TEST : ** TEMPORARY METHOD **
-    //Displaying tile on a given position .
-    public void tilePositionTestMethod() {
-        System.out.print("Current tile on position 7 7 : ");
-        System.out.println(board[7][7]);
-        System.out.print("Current tile on position 5 7 : ");
-        System.out.println(board[5][7]);
-    }
 
-    public static void firstTileH(int row, int col, int wordSize) {  //Row stays the same - Column changes
-        for(int i = 0; i < wordSize; i++){
+    public static void firstTileH(int row, int col, int wordSize) {  //Row stays the same - Column changes - Just Checks
+        for(int i = 0; i < wordSize; i++){  //Checks that whatever the length of the word you wish to place will actually cover the centre piece
             if (row-1 == 7 && col-1 == 7){
                 return;
             }
             col++;
         }
-        throw new IllegalArgumentException("Can only place Tiles at position [8,8]");
+        throw new IllegalArgumentException("You must place tiles that cover the centre tile - [8,8]");
     }
 
-    public static void firstTileV(int row, int col, int wordSize){
-        for(int i = 0; i < wordSize; i++){
+    public static void firstTileV(int row, int col, int wordSize){  //Just Checks
+        for(int i = 0; i < wordSize; i++){  //Checks that whatever the length of the word you want to place will actually cover the centre piece
             if (row-1 == 7 && col-1 == 7){
                 return;
             }
             row++;
         }
-        throw new IllegalArgumentException("Can only place the Tile at Position [8,8]");
+        throw new IllegalArgumentException("You must place tiles that cover the centre tile - [8,8]");
     }
+
 
     //Board Reset :
     public void boardReset() {
         for (int row = 0; row < board.length; row++) {
             for (int column = 0; column < board.length; column++) {
-                board[row][column] = ' ';
+                board[row][column] = 0;
 
             }
         }
@@ -181,16 +211,15 @@ public class Board {
     //Check that the tile placement is within the bounds of the board
     public static void main(String[] args) {
         Board board = new Board();
+        Frame f = new Frame();
+        System.out.println(f);
         for(int i = 0; i < 2; i++) {
             board.getBoardInput();
         }
         board.boardDisplay();
+        System.out.println(getTile(8, 8));
         //System.out.println(getTile(board, 8, 8));
     }
 
-    // TODO: 20/02/2020 Check that the frame has the nessacary letters to place the tiles on the Board - Need to Test
-    // TODO: 20/02/2020 If the tile placed is on a multiplier then, overwrite the multiplier - Need Test
-    // TODO: 21/02/2020 Word conflicts with existing letter on the board
-    // TODO: 21/02/2020 if it is not the first word - then it connects with other letters - Need to check that the no spaces inbetween words
-    // TODO: 21/02/2020 it is not nessacary that the first tile placed must be on 8,8 - the 2nd or 3rd can be on it too
-}
+
+  } //FML

@@ -7,8 +7,7 @@ import java.util.Scanner;
 public class Frame 
 {
 	private Pool pool = new Pool();;
-    private char [] frame;
-
+    private static char [] frame;
     //frame constructor
     public Frame() {
         frame = new char[7];
@@ -107,13 +106,14 @@ public class Frame
         pool.swap(frame, NumberOfLetter);
     }
 
-    public void removeTile(char letter){
+    public static void removeTile(char letter){
         for (int tiles = 0; tiles < frame.length; tiles++){
             if (frame[tiles] == letter){
                 frame[tiles] = 0;
             }
         }
     }
+
 
 
     //reset function, empties the frame
