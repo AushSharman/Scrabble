@@ -1,12 +1,14 @@
 
 //GrandNeedleWorker - ayush sharma - 18301681
+
 import java.util.*;
+import java.util.ListIterator;
 
 public class Pool {
-    private  Tiles tileObj = new Tiles();
+    private Tiles tilesObj;
+    //private static Iterator iterator;
     private static LinkedList<Tiles> numberOfTilesInPool;
-    //private  Frame frame;
-    private int[] letterCount = new int[]{9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1, 2};    //Number OF tiles
+    private static int[] letterCount = new int[]{9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1, 2};    //Number OF tiles
 
 
     public Pool() {
@@ -15,22 +17,24 @@ public class Pool {
         createTilePoint();
     }
 
+
+    /*Create something to hold the Tile and it's count*/
     private void createTilePoint() {
         char[] tiles = "ABCDEFGHIJKLMNOPQRSTUVWXYZ_".toCharArray();
         for (int j = 0; j < letterCount.length; j++) {
-            numberOfTilesInPool.add(new Tiles(Character.toUpperCase(tiles[j]), letterCount[j]));
+            numberOfTilesInPool.add(new Tiles(tiles[j], letterCount[j]));
         }
     }
 
-    public int getLetterScore(char letter) {
-        return tileObj.getLettervalueArray()[Character.toUpperCase(letter) - 'A'];
+    public int getScoreOfTile(char letter) {
+        return Tiles.getLettervalueArray()[letter - 'A'];
     }
     //Allow access to the points of a tile
 
     public int getWordScore(String word) {
         int sum = 0;
         for (char letter : word.toCharArray()) {
-            sum += getLetterScore(Character.toUpperCase(letter));
+            sum += getScoreOfTile(Character.toUpperCase(letter));
         }
         return sum;
     }
@@ -38,96 +42,94 @@ public class Pool {
 
     public int getTotalTiles() {
         int sum = 0;
-        for (Tiles tiles : numberOfTilesInPool){
-            sum += tiles.getLetterValue();
+        for (Tiles tiles : numberOfTilesInPool) {
+            sum += tiles.getLetterCount();
         }
         return sum;
-        }
+    }
     //Returns the number of tiles in the pool at the moment
 
     public void resetPool() {
         numberOfTilesInPool.clear();
-        createTilePoint();
     }
-    //Since its a LL - clear it first and call the function to recreate it again
+    //Since its a LL - clear it first
 
     public boolean isPoolEmpty() {
         return numberOfTilesInPool.isEmpty();
     }
 
 
-
-     private static void tileLimit(Tiles tile) {
-        if (tile.getLetterValue() < 0) {
-            throw new IllegalArgumentException("Cannot access anymore Tile " + tile.getLetter() + " as it doesn't exist " + tile.getLetterValue());
-        }
-    }
-    //a validation method of sorts - checks to see if the number of tiles in letterCount array is not 0
-
-
-    public  void swap(Frame frame, int numberOfSwaps) {
+    /*public  void swap(Frame frame, int numberOfSwaps) {
         for (int i = 0; i < numberOfSwaps; i++) {
             int random = (int) (Math.random() * numberOfTilesInPool.size());
             Tiles tiles = numberOfTilesInPool.get(random);
-            tileLimit(tiles);
-            frame.getFrame()[i] = tiles.getLetter();
-            reduceTileCount(tiles.getLetter());
-        }
-    }
-
-   // public void addTileBack(char letter) {}
-
-
-    protected  void reduceTileCount(char letter) {
-        for (Tiles tiles : numberOfTilesInPool) {
-            if (tiles.getLetter() == Character.toUpperCase(letter)) {
-                tiles.setLetterValue(tiles.getLetterValue() - 1);
+            if(!tileLimit(tiles)){
+                frame.getFrame()[i] = tiles.getLetter();
+                reduceTileCount(tiles.getLetter());
+            } else{
+                swap(frame, numberOfSwaps);
                 break;
             }
         }
-    }
+    }*/
 
-    public void reduceTiles(char []frame){
-        for(int i = 0; i < frame.length; i++){
-            reduceTileCount(frame[i]);
-        }
+    // public void addTileBack(char letter) {}
+
+
+    public static void reduceTileCount(Tiles tile) {                   //Reduce the Number of tileCount of a tile in the LinkedList
+        Tiles.setLetterCount(tile, tile.getLetterCount()-1);
     }
+//
+//    public void reduceTiles(char []frame){
+//        for(int i = 0; i < frame.length; i++){
+//            reduceTileCount(frame[i]);
+//        }
+//    }
     //Whenever Player takes tiles out, reduce the tile count from the array
 
-    public int getLetterCount(char letter){
-        for (Tiles tiles : numberOfTilesInPool){
-            if (tiles.getLetter() == letter){
-                return tiles.getLetterValue();
+    public static int getLetterCountInPool(char letter) {
+        for (Tiles tiles : numberOfTilesInPool) {
+            if (tiles.getLetter() == letter) {
+                return tiles.getLetterCount();
             }
         }
         return 0;
     }
 
-    public  char[] assignToFrame() {
-        char[] returnArray = new char[7];
-        for (int i = 0; i < 7; i++) {
-            int random = (int) (Math.random() * numberOfTilesInPool.size());
-            Tiles linkedTile = numberOfTilesInPool.get(random);
-            tileLimit(linkedTile);
-            returnArray[i] = linkedTile.getLetter();
-            reduceTileCount(linkedTile.getLetter());
+    //Get the indexes with the Frame[] is 0 - and overwrite
+    public static void drawTiles(char[] frame, int numberOfTilesWantToDraw) {
+        for (int index = 0; index < numberOfTilesWantToDraw; index++) {
+            if (frame[index] != 0) continue;
+            int random = (int) (Math.random() * numberOfTilesInPool.size());    //RandomIndex
+            Tiles randomTile = numberOfTilesInPool.get(random);                 //Random Tile Object
+            if (!Tiles.tileLimit(randomTile)){
+                frame[index] = randomTile.getLetter(); //Gets a random letter from the LL - and pops it into the player frame
+                reduceTileCount(randomTile);
+            }
+            else{
+                System.out.println("The tile chosen :"+randomTile.getLetter()+" is empty ");
+                drawTiles(frame, index);                    //If Tile is empty - pick another tile
+            }
         }
-        return returnArray;
     }
-    //the frame class should be able to call this from its class
 
     public LinkedList<Tiles> getNumberOfTilesInPool() {
         return numberOfTilesInPool;
     }
-    //display the tiles in the bag
 
     public String toString() {
         String result = "";
-        for (Tiles tiles : numberOfTilesInPool){
-            result += tiles.getLetter() + " has " + tiles.getLetterValue() + "\n";
+        for (Tiles tiles : numberOfTilesInPool) {
+            result += tiles.getLetter() + " has " + tiles.getLetterCount() + "\n";
         }
         return result;
     }
+
+    public static void main(String[] args) {
+        Pool pool = new Pool();
+        Player player = new Player("John");
+    }
+
 
 
 }

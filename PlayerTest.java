@@ -24,12 +24,12 @@ public class PlayerTest
 
         //Test to see the value of the tiles - passes
         System.out.print("Getting the number of tiles for the letter Z");
-        System.out.println(pool.getLetterScore('Z') == 10);
+        System.out.println(pool.getScoreOfTile('Z') == 10);
         //System.out.println("");
 
 
         //Test to see if the Letter Counts in the pool is reduced - passes
-        pool.reduceTiles(frame.getFrame());
+        //pool.reduceTiles(frame.getFrame());
         System.out.println(pool);
 
 
@@ -37,13 +37,13 @@ public class PlayerTest
         System.out.println(pool.getWordScore("cabbage") == 14);
 
         //Test to see whether the reduceTile method works
-        pool.reduceTileCount('Z');
-        System.out.println(pool.getLetterCount('Z') == 0);
+        //pool.reduceTileCount('Z');
+        System.out.println(Pool.getLetterCountInPool('Z') == 0);
         
         //Frame Tests :
         System.out.println(frame);
         //Test to swap first 4 tiles on frame
-        frame.swap(frame, 4);
+        //frame.swap(frame, 4);
         System.out.println(frame);
         System.out.println("");
         
@@ -54,10 +54,10 @@ public class PlayerTest
         //Player Tests :
         //Displaying Player Names :
         player1.displayPlayerData();
-        player1.playerFrameDisplay();
+        //player1.playerFrameDisplay();
         System.out.println("");
 
         player2.displayPlayerData();
-        player2.playerFrameDisplay();
+        //player2.playerFrameDisplay();
     }
 }
