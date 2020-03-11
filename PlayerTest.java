@@ -1,4 +1,4 @@
-public class PlayerTest
+/*public class PlayerTest
 {
     static Player player;
     static Pool pool;
@@ -60,4 +60,4 @@ public class PlayerTest
         player2.displayPlayerData();
         //player2.playerFrameDisplay();
     }
-}
+}*/

@@ -31,6 +31,7 @@ public class Tiles
     }
 
     public static void setLetterCount(Tiles tiles, int val){
+//        System.out.println("In the setLC - tile is " + tiles.getLetter() + " with ["+tiles.getLetterCount());
         tiles.letterCount = val;
     }
 

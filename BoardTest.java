@@ -1,5 +1,5 @@
 
-public class BoardTest 
+/*public class BoardTest
 {
 	public static void main(String args[])
 	{
@@ -26,4 +26,4 @@ public class BoardTest
 		board.boardReset();
 		board.boardDisplay();
 	}
-}
+}*/

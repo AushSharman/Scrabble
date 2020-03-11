@@ -8,26 +8,35 @@ public class Player
 {
 	//Instance Variables :
 	private String playerName;
-	private int playerScore = 0;
+	private static int playerScore = 0;
 	private Frame playerFrame;
 
 	//Constructor :
-	public Player(String playerName)
-	{
+	public Player(String playerName) {
 		this.playerName = playerName;
-		this.playerFrame = new Frame();
+		playerFrame = new Frame();
 	}
-	
+
 	//Getting Player Name :
-	public String getPlayerName()
-	{
+	public String getPlayerName() {
 		return playerName;
+	}
+
+	public void setPlayerFrame(Frame playerFrame) {
+		this.playerFrame = playerFrame;
+	}
+
+	public static int getPlayerScore(){
+		return playerScore;
 	}
 	
 	//Getting Player Frame :
-	public Frame getFrame()
-	{
+	public Frame getFrame() {
 		return playerFrame;
+	}
+
+	public static void increaseScore(int score){
+		playerScore += score;
 	}
 	
 	//Displaying Player Frame 
@@ -39,29 +48,20 @@ public class Player
 	}*/
 	
 	//Displaying Player Data (Name , Score) :
-	public void displayPlayerData()
-	{
+	public void displayPlayerData() {
 		System.out.println("Player Name : " + playerName);
 		System.out.println("Player Score : " + playerScore);
 	}
-	
-	//Displaying Player Score :
-	public static void displayPlayerScore()
-	{
 
-	}
-	
 	//method to trigger the randomly select method 
 	//that allows each player to randomly select tiles from the pool .
-	public char[] getPlayerFrame()
-	{
-		return playerFrame.getFrame();
-	}
+
 	
 	//Resetting Player Names :
-	public void resetPlayerInfo()
-	{
-		String playerName = "";
+	public void resetPlayerInfo() {
+		playerName = "";
 		playerScore = 0;
 	}
+//	 TODO: 11/03/2020 Can't seem to connect the Frame and the Player together
+
 }
