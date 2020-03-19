@@ -8,12 +8,13 @@ public class Player
 {
 	//Instance Variables :
 	private String playerName;
-	private static int playerScore = 0;
+	private static int playerScore;
 	private Frame playerFrame;
 
 	//Constructor :
 	public Player(String playerName) {
 		this.playerName = playerName;
+		playerScore = 0;
 		playerFrame = new Frame();
 	}
 
@@ -58,10 +59,10 @@ public class Player
 
 	
 	//Resetting Player Names :
-	public void resetPlayerInfo() {
+	public void reset() {
 		playerName = "";
 		playerScore = 0;
+		playerFrame = null;
 	}
-//	 TODO: 11/03/2020 Can't seem to connect the Frame and the Player together
 
 }
