@@ -26,9 +26,6 @@ public class Scrabble {
     public static String parseTiles(char[] arry){
         return Arrays.toString(arry);
     }
-    public static int getScoreOfWord(String word){
-        return Pool.getWordScore(word);
-    }
 
     public static void increasePlayerScore(Player player, int score){
         player.increaseScore(score);
@@ -101,7 +98,6 @@ public class Scrabble {
     }
     
 //Can run the game in a loop 
-// TODO: 22/03/2020 Implement a Scoring System  
     // TODO: 22/03/2020 Implement a Challenge of sorts - Calculate score of word - and substract from the overall Score
 // TODO: 23/03/2020 Get the multipliers of the board and implement with score 
     // TODO: 23/03/2020 Ensure that words are connecting on the board 

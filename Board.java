@@ -31,7 +31,7 @@ public class Board {
         }
     }
 
-   /* public static char multipliers(int row, int column) {
+    public static char getMultipliers(int row, int column) {
         //Triple Word Score
         if ((row == 0 && column == 0 || row == 0 && column == 7 || row == 0 && column == 14 ||
             row == 7 && column == 0 || row == 7 && column == 14 ||
@@ -66,76 +66,95 @@ public class Board {
         return 1;
     }
 
-    public static int getMultiplierValueOnBoard(int row, int col) {
-        Tiles multiplier = getBoardTile(row, col);
-        if (multiplier == SIGNS[1] || multiplier == SIGNS[3]) return 2;
-        else if (multiplier == SIGNS[0] || multiplier == SIGNS[2]) return 3;
-        else return 1;
-    }*/
-
-
     public static Tiles getBoardTile(int row, int col) {
         return board[row][col];
     }
 
     public void calculatePoints(int wordSize, int row, int col, Player player, int placement) {
         int score = 0;
+        int wordMult = 1;
+        //score if calculated by adding the points of the tiles individually
+        //so - if I get a double/triple letter - then - I must multiplly line 80 & 86 by 2/3 - Done
+        //so - if I get a word multiplier - then I must multiply score by 2/3 - Done
         if (placement == 1) {    //Find score Horizontally
             for (int index = 0; index < wordSize; index++) {
                 System.out.println("Tiles is " + board[row][col].getLetter());
-                score += Pool.getScoreOfTile(board[row][col]);
+                if (getMultipliers(row, col) == '@' || getMultipliers(row, col) == '+'){//Do Letter multipliers
+                    System.out.println("Inside the multiplier for Letters");
+                    score += (getMultipliers(row, col) == '@')? Pool.getScoreOfTile(board[row][col]) * 3 : Pool.getScoreOfTile(board[row][col]) * 2;
+                }
+                else if (getMultipliers(row, col) == '*' || getMultipliers(row, col) == '£'){
+                    System.out.println("Inside the word multiplier ");
+                    wordMult = getMultipliers(row, col) == '*'? 3 : 2;
+                } else{
+                    score += Pool.getScoreOfTile(board[row][col]);
+                }
                 col++;
             }
-            player.increaseScore(score);
+            System.out.println("Score is " + score);
+            player.increaseScore(score * wordMult);
         } else {
             for (int index = 0; index < wordSize; index++) {
-                score += Pool.getScoreOfTile(board[row][col]);
+                System.out.println("Tiles is " + board[row][col].getLetter());
+                if (getMultipliers(row, col) == '@' || getMultipliers(row, col) == '+'){//Do Letter multipliers
+                    System.out.println("Inside the multiplier for letters - V");
+                    score += (getMultipliers(row, col) == '@')? Pool.getScoreOfTile(board[row][col]) * 3 : Pool.getScoreOfTile(board[row][col]) * 2;
+                }
+                else if (getMultipliers(row, col) == '*' || getMultipliers(row, col) == '£'){
+                    System.out.println("Insid ethe word multipleri - V");
+                    wordMult = getMultipliers(row, col) == '*'? 3 : 2;
+                } else{
+                    score += Pool.getScoreOfTile(board[row][col]);
+                }
                 row++;
             }
-            player.increaseScore(score);
+            System.out.println("Score is " + score);
+            player.increaseScore(score * wordMult);
         }
     }
 
     public void setHorizontalTiles(Scanner input, int wordSize, int row, int col, Player player) {
-        for (int i = 0; i < wordSize; i++) {
-            System.out.println("Enter tiles : ");
-            char tile = input.next().charAt(0);
-            if (firstPlacement) {
-                if (isOccupied(row, col, wordSize, 1) || canOverwriteTile(row, col, new Tiles(tile))) {
-                    if (player.getFrame().hasFrameTile(tile)) {  //Checks if the Frame has the required Tile to place it
-                        player.getFrame().removeTile(tile);     //Removes the Tile from the PlayerFrame - Works perfect upto here
-                        //And adds that tile back to Pool
-                        board[row][col] = new Tiles(tile);
-                        System.out.println("In board - tiles is " + board[row][col].getLetter());
+        if (isTileInBound(row, col, 1,wordSize)) {
+            for (int i = 0; i < wordSize; i++) {
+                System.out.println("Enter tiles : ");
+                char tile = input.next().charAt(0);
+                if (firstPlacement) {
+                    if (isOccupied(row, col) || canOverwriteTile(row, col, new Tiles(tile))) {
+                        if (player.getFrame().hasFrameTile(tile)) {  //Checks if the Frame has the required Tile to place it
+                            player.getFrame().removeTile(tile);     //Removes the Tile from the PlayerFrame - Works perfect upto here
+                            //And adds that tile back to Pool
+                            board[row][col] = new Tiles(tile);
+                            System.out.println("In board - tiles is " + board[row][col].getLetter());
 
-                        col++;
+                            col++;
+                        } else {
+                            System.out.println("The tile you have chosen " + "[" + tile + "] does not exist - Choose again");
+                            setHorizontalTiles(input, wordSize - i, row, col, player);
+                            return;
+                        }
                     } else {
-                        System.out.println("The tile you have chosen " + "[" + tile + "] does not exist - Choose again");
-                        setHorizontalTiles(input, wordSize - i, row, col, player);
+                        System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col) + "- Try again");
+                        setTiles(input, wordSize, wordPlacement, player);
                         return;
                     }
+                    firstPlacement = false;
                 } else {
-                    System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col) + "- Try again");
-                    setTiles(input, wordSize, wordPlacement, player);
-                    return;
-                }
-                firstPlacement = false;
-            } else {
-                if ((isOccupied(row, col, wordSize, 1) || canOverwriteTile(row, col, new Tiles(tile)))) { //&& isConnecting()) {
-                    if (player.getFrame().hasFrameTile(tile)) {  //Checks if the Frame has the required Tile to place it
-                        player.getFrame().removeTile(tile);     //Removes the Tile from the PlayerFrame - Works perfect upto here
-                        board[row][col] = new Tiles(tile);
-                        System.out.println("In board - tiles is " + board[row][col].getLetter());
-                        col++;
-                    } else {
-                        System.out.println("The tile you have chosen " + "[" + tile + "] does not exist - Choose again");
-                        setHorizontalTiles(input, wordSize - i, row, col, player);
-                        return;
-                    }
+                    if ((isOccupied(row, col) || canOverwriteTile(row, col, new Tiles(tile)))) { //&& isConnecting()) {
+                        if (player.getFrame().hasFrameTile(tile)) {  //Checks if the Frame has the required Tile to place it
+                            player.getFrame().removeTile(tile);     //Removes the Tile from the PlayerFrame - Works perfect upto here
+                            board[row][col] = new Tiles(tile);
+                            System.out.println("In board - tiles is " + board[row][col].getLetter());
+                            col++;
+                        } else {
+                            System.out.println("The tile you have chosen " + "[" + tile + "] does not exist - Choose again");
+                            setHorizontalTiles(input, wordSize - i, row, col, player);
+                            return;
+                        }
 //                    System.out.println("Score of tile " + board[row][col].getLetter() + " is " + Pool.getScoreOfTile(board[row][col]));
-                } else {
-                    System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col) + "- Try again");
-                    setTiles(input, wordSize, wordPlacement, player);
+                    } else {
+                        System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col) + "- Try again");
+                        setTiles(input, wordSize, wordPlacement, player);
+                    }
                 }
             }
         }
@@ -147,72 +166,61 @@ public class Board {
 
     public void setVerticalTiles(Scanner input, int wordSize, int row, int col, Player player) {
 //        System.out.println("word is going to place vertically. word count is : " + wordSize);
-        for (int j = 0; j < wordSize; j++) {
-            System.out.println("Enter tiles : ");
-            char tile = input.next().charAt(0);
-            if (firstPlacement) {
-                if (isOccupied(row, col, wordSize, 2) || canOverwriteTile(row, col, new Tiles(tile))) { //If tilePos is occupied - ask for Positions again
-                    if (player.getFrame().hasFrameTile(tile)) {
-                        player.getFrame().removeTile(tile);
-                        board[row][col] = new Tiles(tile);
-                        System.out.println("In board - tiles is " + board[row][col].getLetter());
-                        row++;
+        if (isTileInBound(row, col, 2, wordSize)) {
+            for (int j = 0; j < wordSize; j++) {
+                System.out.println("Enter tiles : ");
+                char tile = input.next().charAt(0);
+                if (firstPlacement) {
+                    if (isOccupied(row, col) || canOverwriteTile(row, col, new Tiles(tile))) { //If tilePos is occupied - ask for Positions again
+                        if (player.getFrame().hasFrameTile(tile)) {
+                            player.getFrame().removeTile(tile);
+                            board[row][col] = new Tiles(tile);
+                            System.out.println("In board - tiles is " + board[row][col].getLetter());
+                            row++;
+                        } else {
+                            System.out.println("The tile you have chosen " + "[" + tile + "] does not exist - Choose again");
+                            setVerticalTiles(input, wordSize - j, row, col, player);
+                            return;
+                        }
                     } else {
-                        System.out.println("The tile you have chosen " + "[" + tile + "] does not exist - Choose again");
-                        setVerticalTiles(input, wordSize - j, row, col, player);
+                        System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col) + "- Try again");
+                        setTiles(input, wordSize, wordPlacement, player);
                         return;
                     }
+                    firstPlacement = false;
                 } else {
-                    System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col) + "- Try again");
-                    setTiles(input, wordSize, wordPlacement, player);
-                    return;
-                }
-                firstPlacement = false;
-            } else {
-                if ((isOccupied(row, col, wordSize, 2) || canOverwriteTile(row, col, new Tiles(tile)))) {//&& isConnecting()) { //If tilePos is occupied - ask for Positions again
-                    if (player.getFrame().hasFrameTile(tile)) {
-                        player.getFrame().removeTile(tile);
-                        board[row][col] = new Tiles(tile);
-                        System.out.println("In board - tiles is " + board[row][col].getLetter());
-                        row++;
+                    if ((isOccupied(row, col) || canOverwriteTile(row, col, new Tiles(tile)))) {//&& isConnecting()) { //If tilePos is occupied - ask for Positions again
+                        if (player.getFrame().hasFrameTile(tile)) {
+                            player.getFrame().removeTile(tile);
+                            board[row][col] = new Tiles(tile);
+                            System.out.println("In board - tiles is " + board[row][col].getLetter());
+                            row++;
+                        } else {
+                            System.out.println("The tile you have chosen " + "[" + tile + "] does not exist - Choose again");
+                            setVerticalTiles(input, wordSize - j, row, col, player);
+                            return;
+                        }
                     } else {
-                        System.out.println("The tile you have chosen " + "[" + tile + "] does not exist - Choose again");
-                        setVerticalTiles(input, wordSize - j, row, col, player);
+                        System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col) + "- Try again");
+                        setTiles(input, wordSize, wordPlacement, player);
                         return;
                     }
-                } else {
-                    System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col) + "- Try again");
-                    setTiles(input, wordSize, wordPlacement, player);
-                    return;
                 }
             }
-
         }
-        calculatePoints(wordSize, row-wordSize, col, player, 1);
+        calculatePoints(wordSize, row-wordSize, col, player, 2);
         player.getFrame().refill();
     }
 
-    public boolean isOccupied(int row, int col, int wordSize, int placement) {
-        if (placement == 1) {   //The tile placement is Horizontal
-            for (int i = 0; i < wordSize; i++) {
-                if (board[row][col] != null) return false;
-                col++;
-            }
-            return true;
-        } else if (placement == 2) {     //The tile placement is Vertical
-            for (int i = 0; i < wordSize; i++) {
-                if (board[row][col] != null) return false;
-                row++;
-            }
-        }
-        return true;
+    public boolean isOccupied(int row, int col) {
+        return board[row][col] == null;
     }
 
     public boolean canOverwriteTile(int row, int col, Tiles tiles) {
         return board[row][col].equals(tiles);
     }
 
-    /*public boolean isConnecting(int row, int col){//If vertical of horizontal placement - check in a sqaure
+    /*public boolean isConnecting(int row, int col){//If vertical of horizontal placement - check in a sqaure for the wordSize
         if (row== 0 && col == 0) //check right and down
         if (row == 0 && col == 14)//check left and down
         if (row == 0) //check left,right and down
@@ -247,11 +255,11 @@ public class Board {
                 return false;
             }
         } else {
-            if (vertical == 1 && col + lengthOfWord > 15) {
+            if (vertical == 1 && (row > 15 && col + lengthOfWord > 15)) {
                 System.out.println("\"Your placement of the Tiles are out of bounds[15x15] - Try again\"");
                 return false;
 //                getBoardInput(player);
-            } else if (vertical == 2 && row + lengthOfWord > 15) {
+            } else if (vertical == 2 && (col > 15 && row + lengthOfWord > 15)){
                 System.out.println("incorrect");
                 return false;
 //                getBoardInput(player);
