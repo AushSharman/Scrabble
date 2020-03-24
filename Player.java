@@ -8,7 +8,7 @@ public class Player
 {
 	//Instance Variables :
 	private String playerName;
-	private static int playerScore;
+	private int playerScore;
 	private Frame playerFrame;
 
 	//Constructor :
@@ -27,7 +27,7 @@ public class Player
 		this.playerFrame = playerFrame;
 	}
 
-	public static int getPlayerScore(){
+	public int getPlayerScore(){
 		return playerScore;
 	}
 	
@@ -36,7 +36,7 @@ public class Player
 		return playerFrame;
 	}
 
-	public static void increaseScore(int score){
+	public void increaseScore(int score){
 		playerScore += score;
 	}
 	
@@ -63,6 +63,10 @@ public class Player
 		playerName = "";
 		playerScore = 0;
 		playerFrame = null;
+	}
+
+	public static void main(String[] args) {
+		System.out.println("hi");
 	}
 
 }

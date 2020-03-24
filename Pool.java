@@ -57,7 +57,7 @@ public class Pool {
     //Set all the values of the Tiles to be 0
 
 
-    public boolean isPoolEmpty() {
+    public static boolean isPoolEmpty() {
         return getTotalTiles() == 0;
     }
 

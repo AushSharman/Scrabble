@@ -34,7 +34,7 @@ The Frame is made up of Tile[]
 
 
     //swap function, swaps select number of tiles from the pool function
-    public static void swap(Frame frame, int NumberOfLetter) {
+ /*   public static void swap(Frame frame, int NumberOfLetter) {
         for (int index = 0; index < NumberOfLetter; index++) {
 //            System.out.println(frame.getFrame().length);
             int randomIndex = (int) (Math.random() * frame.getFrame().length);
@@ -52,7 +52,18 @@ The Frame is made up of Tile[]
 //Incrementing Pool values by 1 - then setting the frameValue to null and calling the
 //Pool draw to assign randomTiles
         Pool.drawTiles(frame, 7);
-    }
+    }*/
+
+ public static void swap(Frame frame, char letterToSwap){
+     for (int index = 0; index < frame.getFrame().length; index++){
+         if (frame.getFrame()[index].getLetter() == letterToSwap){
+             Pool.addTileBack(frame.getFrame()[index]);
+             frame.getFrame()[index] = null;
+             break;
+         }
+     }
+     Pool.drawTiles(frame, 7);
+ }
 
     public void removeTile(char letter) { //Removes the Tile from the Frame
         if (hasFrameTile(letter)) {
@@ -118,7 +129,7 @@ The Frame is made up of Tile[]
 //        System.out.println("Remove the first = " + frame);
         frame.refill();
         System.out.println(frame);//works fine upto here
-        Frame.swap(frame, 5);
+//        Frame.swap(frame, 5);
         System.out.println(frame);
         System.out.println(pool);
 

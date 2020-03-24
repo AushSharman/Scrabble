@@ -31,30 +31,26 @@ public class Board {
         }
     }
 
-  /*  public static void multipliers(int row, int column) {
+   /* public static char multipliers(int row, int column) {
         //Triple Word Score
         if ((row == 0 && column == 0 || row == 0 && column == 7 || row == 0 && column == 14 ||
             row == 7 && column == 0 || row == 7 && column == 14 ||
             row == 14 && column == 0 || row == 14 && column == 7 || row == 14 && column == 14)) {
-            board[row][column] = SIGNS[0];
+            return SIGNS[0];
         }
         //Double Word Score
         else if ((row == 1 && column == 1 || row == 1 && column == 13 || row == 2 && column == 2 || row == 2 && column == 12 ||
             row == 3 && column == 3 || row == 3 && column == 11 || row == 4 && column == 4 || row == 4 && column == 10 ||
             row == 10 && column == 4 || row == 10 && column == 10 || row == 11 && column == 3 || row == 11 && column == 11 ||
             row == 12 && column == 2 || row == 12 && column == 12 || row == 13 && column == 1 || row == 13 && column == 13)){
-            board[row][column] = SIGNS[1];
-        }
-        //Centre
-        else if (row == 7 && column == 7) {
-            board[row][column] = '!';
+            return SIGNS[1];
         }
         //Triple Letter Score
         else if ((row == 1 && column == 5 || row == 1 && column == 9 || row == 5 && column == 1 ||
                 row == 5 && column == 5 || row == 5 && column == 9 || row == 5 && column == 13 ||
                 row == 9 && column == 1 || row == 9 && column == 5 || row == 9 && column == 9 ||
                 row == 9 && column == 13 || row == 13 && column == 5 || row == 13 && column == 9)){
-            board[row][column] = SIGNS[2];
+            return SIGNS[2];
         }
         //Double Letter Score
         else if ((row == 0 && column == 3 || row == 0 && column == 11 || row == 2 && column == 6 ||
@@ -65,26 +61,43 @@ public class Board {
                 row == 8 && column == 8 || row == 8 && column == 12 || row == 11 && column == 0 ||
                 row == 11 && column == 7 || row == 11 && column == 14 || row == 12 && column == 6 ||
                 row == 12 && column == 8 || row == 14 && column == 3 || row == 14 && column == 11)) {
-            board[row][column] = SIGNS[3];
+            return SIGNS[3];
         }
+        return 1;
     }
 
     public static int getMultiplierValueOnBoard(int row, int col) {
-        char multiplier = getBoardTile(row, col);
+        Tiles multiplier = getBoardTile(row, col);
         if (multiplier == SIGNS[1] || multiplier == SIGNS[3]) return 2;
         else if (multiplier == SIGNS[0] || multiplier == SIGNS[2]) return 3;
         else return 1;
-    }   */
+    }*/
 
 
     public static Tiles getBoardTile(int row, int col) {
         return board[row][col];
     }
 
+    public void calculatePoints(int wordSize, int row, int col, Player player, int placement) {
+        int score = 0;
+        if (placement == 1) {    //Find score Horizontally
+            for (int index = 0; index < wordSize; index++) {
+                System.out.println("Tiles is " + board[row][col].getLetter());
+                score += Pool.getScoreOfTile(board[row][col]);
+                col++;
+            }
+            player.increaseScore(score);
+        } else {
+            for (int index = 0; index < wordSize; index++) {
+                score += Pool.getScoreOfTile(board[row][col]);
+                row++;
+            }
+            player.increaseScore(score);
+        }
+    }
+
     public void setHorizontalTiles(Scanner input, int wordSize, int row, int col, Player player) {
-//        System.out.println("word is going to place horizontally. word count is : " + wordSize);
         for (int i = 0; i < wordSize; i++) {
-//            System.out.println("i in hori " + i);
             System.out.println("Enter tiles : ");
             char tile = input.next().charAt(0);
             if (firstPlacement) {
@@ -93,6 +106,8 @@ public class Board {
                         player.getFrame().removeTile(tile);     //Removes the Tile from the PlayerFrame - Works perfect upto here
                         //And adds that tile back to Pool
                         board[row][col] = new Tiles(tile);
+                        System.out.println("In board - tiles is " + board[row][col].getLetter());
+
                         col++;
                     } else {
                         System.out.println("The tile you have chosen " + "[" + tile + "] does not exist - Choose again");
@@ -105,24 +120,28 @@ public class Board {
                     return;
                 }
                 firstPlacement = false;
-            } else{
-                if ((isOccupied(row, col, wordSize, 1) || canOverwriteTile(row, col, new Tiles(tile)))){ //&& isConnecting()) {
+            } else {
+                if ((isOccupied(row, col, wordSize, 1) || canOverwriteTile(row, col, new Tiles(tile)))) { //&& isConnecting()) {
                     if (player.getFrame().hasFrameTile(tile)) {  //Checks if the Frame has the required Tile to place it
                         player.getFrame().removeTile(tile);     //Removes the Tile from the PlayerFrame - Works perfect upto here
-                        //And adds that tile back to Pool
                         board[row][col] = new Tiles(tile);
+                        System.out.println("In board - tiles is " + board[row][col].getLetter());
                         col++;
                     } else {
                         System.out.println("The tile you have chosen " + "[" + tile + "] does not exist - Choose again");
                         setHorizontalTiles(input, wordSize - i, row, col, player);
                         return;
                     }
+//                    System.out.println("Score of tile " + board[row][col].getLetter() + " is " + Pool.getScoreOfTile(board[row][col]));
                 } else {
                     System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col) + "- Try again");
                     setTiles(input, wordSize, wordPlacement, player);
                 }
             }
         }
+        System.out.println("ROw is " + row);
+        System.out.println("Col with addOf- " + col + "-> Now it is " + (col-wordSize));
+        calculatePoints(wordSize, row, col-wordSize, player, 1);
         player.getFrame().refill();
     }
 
@@ -136,6 +155,7 @@ public class Board {
                     if (player.getFrame().hasFrameTile(tile)) {
                         player.getFrame().removeTile(tile);
                         board[row][col] = new Tiles(tile);
+                        System.out.println("In board - tiles is " + board[row][col].getLetter());
                         row++;
                     } else {
                         System.out.println("The tile you have chosen " + "[" + tile + "] does not exist - Choose again");
@@ -148,11 +168,12 @@ public class Board {
                     return;
                 }
                 firstPlacement = false;
-            } else{
-                if ((isOccupied(row, col, wordSize, 2) || canOverwriteTile(row, col, new Tiles(tile))) ){//&& isConnecting()) { //If tilePos is occupied - ask for Positions again
+            } else {
+                if ((isOccupied(row, col, wordSize, 2) || canOverwriteTile(row, col, new Tiles(tile)))) {//&& isConnecting()) { //If tilePos is occupied - ask for Positions again
                     if (player.getFrame().hasFrameTile(tile)) {
                         player.getFrame().removeTile(tile);
                         board[row][col] = new Tiles(tile);
+                        System.out.println("In board - tiles is " + board[row][col].getLetter());
                         row++;
                     } else {
                         System.out.println("The tile you have chosen " + "[" + tile + "] does not exist - Choose again");
@@ -167,6 +188,7 @@ public class Board {
             }
 
         }
+        calculatePoints(wordSize, row-wordSize, col, player, 1);
         player.getFrame().refill();
     }
 
@@ -206,12 +228,9 @@ public class Board {
     //Conditions for if the location is on the edge of the board
 
 
-
-
-
     private boolean isTileInBound(int row, int col, int vertical, int lengthOfWord) {
         if (first) {  //if first call to this Method -> TIles must cover the center
-            if (row > 15 || col > 15 || row < 0 || col < 0) {
+            if (row < 15 && col < 15) {
                 if (vertical == 1 && firstTileH(row, col, lengthOfWord)) {
                     first = false;
                     return true;
@@ -227,7 +246,7 @@ public class Board {
                 System.out.println("Co-ordinates chosen are out of bounds - Try again");
                 return false;
             }
-        }else {
+        } else {
             if (vertical == 1 && col + lengthOfWord > 15) {
                 System.out.println("\"Your placement of the Tiles are out of bounds[15x15] - Try again\"");
                 return false;
@@ -254,7 +273,7 @@ public class Board {
 
     public boolean firstTileV(int row, int col, int wordSize) {  //Just Checks
         for (int i = 0; i < wordSize; i++) {  //Checks that whatever the length of the word you want to place will actually cover the centre piece
-            if (row== 7 && col== 7) {
+            if (row == 7 && col == 7) {
                 return true;
             }
             row++;
@@ -262,7 +281,7 @@ public class Board {
         return false;
     }
 
-    public String[] getNewPositions(){
+    public String[] getNewPositions() {
         int row, column = 0;
         System.out.println("Enter the position[row, col] on the board : ");
         Scanner in = new Scanner(System.in);
@@ -270,7 +289,7 @@ public class Board {
         return res;
     }
 
-    public void setTiles(Scanner input,int wordSize, int placementFormat, Player player){
+    public void setTiles(Scanner input, int wordSize, int placementFormat, Player player) {
         String[] in = getNewPositions();
         int row = Integer.parseInt(in[0]) - 1;
         int col = Integer.parseInt(in[1]) - 1;
@@ -279,21 +298,25 @@ public class Board {
             getBoardInput(player);
             return;
         }
-        if (placementFormat == 1) setHorizontalTiles(input, wordSize, row, col, player);
-        else if (placementFormat == 2) setVerticalTiles(input, wordSize, row, col, player);
+        if (placementFormat == 1) {
+            setHorizontalTiles(input, wordSize, row, col, player);
+        } else if (placementFormat == 2) {
+            setVerticalTiles(input, wordSize, row, col, player);
+        }
+        System.out.println("Board at loc " + row + col + " is " + board[row][col]);
     }
     //Method asks for [row,col] and checks if it is in bounds
     //IF yes - Allow placement of the TIles
 
     //Getting tile input from user
     public void getBoardInput(Player player) {
-        int wordSize,row, col = 0;
+        int wordSize, row, col = 0;
         Scanner input = new Scanner(System.in);
         System.out.println("Select [1]-place word horizontally or select [2]-place word vertically : ");
         wordPlacement = input.nextInt();
         System.out.println("Enter word size : ");
         wordSize = input.nextInt();
-        setTiles(input, wordSize,wordPlacement, player);
+        setTiles(input, wordSize, wordPlacement, player);
 
     }
 
@@ -310,17 +333,12 @@ public class Board {
     //Check that the tile placement is within the bounds of the board
     public static void main(String[] args) {
         Pool pool = new Pool();
-//        System.out.println(pool);
-        System.out.println(Pool.getTotalTiles());
-        Player player = new Player("John");
         Board board = new Board();
-        board.display();
-        System.out.println(player.getFrame());
-        board.getBoardInput(player);
-        board.display();
-        System.out.println(player.getFrame());
+        Main test = new Main();
         System.out.println(Pool.getTotalTiles());
+        Player player = new Player("L");
+        System.out.println(player.getFrame());
         board.getBoardInput(player);
-        board.display();
+
     }
 }
