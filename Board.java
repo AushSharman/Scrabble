@@ -116,7 +116,25 @@ public class Board {
         }
     }
 
-//    private boolean isConnecting(int row, int col, int wordSize, int placement){}
+    private boolean isConnecting(int row, int col, int wordSize, int placement){
+        boolean var = false;
+        if (placement == 1){
+            for (int index = 0; index < wordSize; index++){
+             if (!isOccupied(row-1, col) || !isOccupied(row+1, col)){
+                 var = true;
+             }
+             col++;
+            }
+        } else {
+            for (int index = 0; index < wordSize; index++){
+                if (!isOccupied(row, col-1) || !isOccupied(row, col+1)){
+                    var = true;
+                }
+                row++;
+            }
+        }
+        return var;
+    }
     public void setHorizontalTiles(Scanner input, int wordSize, int row, int col, Player player) {
         pos.clear();
         if (isTileInBound(row, col, 1,wordSize)) {
@@ -143,7 +161,7 @@ public class Board {
                     }
                     firstPlacement = false;
                 } else {
-                    if ((isOccupied(row, col) || canOverwriteTile(row, col, new Tiles(tile)))) { //&& isConnecting()) {
+                    if ((isOccupied(row, col) || canOverwriteTile(row, col, new Tiles(tile)) || isConnecting(row, col, wordSize, 1))) { //&& isConnecting()) {
                         if (player.getFrame().hasFrameTile(tile)) {  //Checks if the Frame has the required Tile to place it
                             player.getFrame().removeTile(tile);     //Removes the Tile from the PlayerFrame - Works perfect upto here
                             board[row][col] = new Tiles(tile);
@@ -192,7 +210,7 @@ public class Board {
                     }
                     firstPlacement = false;
                 } else {
-                    if ((isOccupied(row, col) || canOverwriteTile(row, col, new Tiles(tile)))) {//&& isConnecting()) { //If tilePos is occupied - ask for Positions again
+                    if ((isOccupied(row, col) || canOverwriteTile(row, col, new Tiles(tile)) || isConnecting(row, col, wordSize, 2))) {//&& isConnecting()) { //If tilePos is occupied - ask for Positions again
                         if (player.getFrame().hasFrameTile(tile)) {
                             player.getFrame().removeTile(tile);
                             board[row][col] = new Tiles(tile);
