@@ -1,3 +1,4 @@
+import javax.naming.NameParser;
 import java.util.Arrays;
 
 //Daiana Morjolic .
@@ -39,6 +40,10 @@ public class Player
 	public void increaseScore(int score){
 		playerScore += score;
 	}
+
+	public void decreaseScore(int score){
+		playerScore -= score;
+	}
 	
 	//Displaying Player Frame 
 	//And selects 7 random tiles to the Frame .
@@ -57,6 +62,15 @@ public class Player
 	//method to trigger the randomly select method 
 	//that allows each player to randomly select tiles from the pool .
 
+	public void challenge(String word, Player player){
+		player.decreaseScore(Pool.getWordScore(word) );
+		for (int index =0; index < word.length(); index++){
+			Pool.addTileBack(new Tiles(word.charAt(index)));
+		}
+		for (int index = 0; index < Board.pos.size(); index=index+2){
+			Board.removeTileFromBoard(Board.pos.get(index), Board.pos.get(index+1));
+		}
+	}
 	
 	//Resetting Player Names :
 	public void reset() {
@@ -65,8 +79,5 @@ public class Player
 		playerFrame = null;
 	}
 
-	public static void main(String[] args) {
-		System.out.println("hi");
-	}
 
 }

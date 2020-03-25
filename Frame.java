@@ -69,7 +69,7 @@ The Frame is made up of Tile[]
         if (hasFrameTile(letter)) {
             for (int i = 0; i < frame.length; i++) {
                 if (frame[i] == null) continue;
-                if (frame[i].getLetter() == letter) {
+                if (frame[i].getLetter() == letter && !Pool.isPoolEmpty()) {
 //                    Pool.reduceTileCount(frame[i]);
                     System.out.println("Pool has " + Pool.getTotalTiles());
                     frame[i] = null;
@@ -85,7 +85,7 @@ The Frame is made up of Tile[]
     * player takes in new Tiles from the Pool */
     public void refill(){
 //        System.out.println("Before refill");
-        Pool.drawTiles(this, 7);
+        if (!Pool.isPoolEmpty()) Pool.drawTiles(this, 7);
 //        System.out.println("After Frame refill - " + Arrays.toString(frame));
     }
 

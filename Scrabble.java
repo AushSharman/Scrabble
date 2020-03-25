@@ -15,24 +15,9 @@ public class Scrabble {
     public Scrabble() {
         pool = new Pool();
         board = new Board();
+
         p2Turn = 1;
         scanIn = new Scanner(System.in);
-    }
-
-    public static int getScoreOfLetter(char letter){
-        return Pool.getScoreOfTile(new Tiles(letter));
-    }
-
-    public static String parseTiles(char[] arry){
-        return Arrays.toString(arry);
-    }
-
-    public static void increasePlayerScore(Player player, int score){
-        player.increaseScore(score);
-    }
-
-    public static int getScoreOfTile(int row, int col){
-        return Board.getBoardTile(row, col).getLetterPoints();
     }
 
     public void getPlayerInput() {
@@ -63,10 +48,14 @@ public class Scrabble {
                 }
                     System.out.println(s + " has now the Frame - " + player.getFrame());
                 break;
+            case "Challenge":
+                System.out.println("What word do you wish to challenge : ");
+                player.challenge(scanIn.nextLine(), (counter == p2Turn)? p1 : p2);
+                break;
             default:
                 board.getBoardInput(player);
                 board.display();
-                System.out.println(player.getPlayerName() + " has " + player.getPlayerScore());
+                System.out.println(player.getPlayerName() + " has " + player.getPlayerScore() + " points");
         }
     }
 
@@ -76,14 +65,14 @@ public class Scrabble {
         while (!Pool.isPoolEmpty() ) {
             if (counter % 2 == 0) {
                 System.out.println(p1.getPlayerName() + "-" + p1.getFrame());
-                System.out.println("Enter User Command : [Quit] [Pass] [Exchange] [Place]");
+                System.out.println("Enter User Command : [Place] [Challenge] [Quit] [Pass] [Exchange] [Place]");
                 String option = scanIn.next();
                 scanIn.nextLine();
                 executeOption(p1, option);
                 counter = p2Turn;
             } else{
                 System.out.println(p2.getPlayerName() + "-" + p2.getFrame());
-                System.out.println("Enter User Command : [Quit] [Pass] [Exchange] [Place]");
+                System.out.print("Enter User Command :[Place] [Challenge] [Quit] [Pass] [Exchange] ");
                 String option = scanIn.next();
                 scanIn.nextLine();
                 executeOption(p2, option);
@@ -97,10 +86,8 @@ public class Scrabble {
         s.playGame();
     }
     
-//Can run the game in a loop 
-    // TODO: 22/03/2020 Implement a Challenge of sorts - Calculate score of word - and substract from the overall Score
-// TODO: 23/03/2020 Get the multipliers of the board and implement with score 
-    // TODO: 23/03/2020 Ensure that words are connecting on the board 
+// When challenge called - Success -> Ask for input of Words -> Subtract from Player Score, Add words placed back into the Pool -> Therefore, need to know where the Tiles where placed
+    // TODO: 23/03/2020 Ensure that words are connecting on the board
 }
 
 

@@ -62,8 +62,6 @@ public class Pool {
     }
 
     public static void addTileBack(Tiles tiles) {   //Increase the Number of tileCount
-//        System.out.println("In addBack");
-//        System.out.println("The tile before " + tiles.getLetter() + " is now " + (int)getLetterCount(tiles.getLetter()));
         setLetterCount(tiles.getLetter(), ((int)getLetterCount(tiles.getLetter()) + 1));
 //        System.out.println("The tile after " + tiles.getLetter() + " is now " + getLetterCount(tiles.getLetter()));
     }
@@ -77,28 +75,20 @@ public class Pool {
 
     //Get the indexes with the Frame[] is 0 - and overwrite
     public static void drawTiles(Frame frame, int numberOfTilesWantToDraw) {
-//        System.out.println("Before drawing - " + getTotalTiles());
         for (int index = 0; index < numberOfTilesWantToDraw; index++) {
 //            System.out.println("Index is " + index);
             if (frame.getFrame()[index] != null) continue;
             int random = (int) (Math.random() * numberOfTilesInPool.size());    //RandomIndex
             Tiles randomTile = numberOfTilesInPool.get(random);                 //Random Tile Object
-//            System.out.println("In drawTie");
-//            System.out.println("Tile is drawTile is " + randomTile.getLetter() + " is " + getLetterCount(randomTile.getLetter()));
             if (!tileLimit(randomTile)){
                 frame.getFrame()[index] = randomTile; //Gets a random letter from the LL - and pops it into the player frame
                 reduceTileCount(randomTile);
-//                System.out.println("Random Tile after reduction "+ getLetterCount(randomTile.getLetter()));
             }
             else{
-//                System.out.println("The tile chosen :"+randomTile.getLetter()+" is empty ");
                 drawTiles(frame, numberOfTilesWantToDraw);
                 return;//If Tile is empty - pick another tile
-//                System.out.println("Inside drawTiles v2");
             }
-//            System.out.println("After drawing - " + getTotalTiles());
         }
-//        System.out.println("After drawTile");
     }
 
     public static int getTotalTiles(){
@@ -120,22 +110,6 @@ public class Pool {
             result += tiles.getLetter() + " has " + getLetterCount(tiles.getLetter()) + "\n";
         }
         return result;
-    }
-
-    public static void main(String[] args) {
-        Pool pool = new Pool();
-        System.out.println(Pool.getTotalTiles()+ " - number of Total Tiles");
-        System.out.println(pool);
-        Player player = new Player("JOn");
-        Player player1 = new Player("Jack");
-        System.out.println(player.getFrame());
-        System.out.println(player1.getFrame());
-        System.out.println(Arrays.toString(letterCount));
-        System.out.println(Pool.getWordScore("cabbage"));
-        System.out.println(Pool.getTotalTiles());
-
-        pool.resetPool();
-        System.out.println(pool);
     }
 
 

@@ -1,7 +1,8 @@
 
 //Ayush Sharma .
 
-public class Tiles 
+
+public class Tiles
 {
 	private char letter;
     private int letterPoints;    //Points Of Tiles
