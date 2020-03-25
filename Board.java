@@ -172,7 +172,6 @@ public class Board {
                             setHorizontalTiles(input, wordSize - i, row, col, player);
                             return;
                         }
-//                    System.out.println("Score of tile " + board[row][col].getLetter() + " is " + Pool.getScoreOfTile(board[row][col]));
                     } else {
                         System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col) + "- Try again");
                         setTiles(input, wordSize, wordPlacement, player);
@@ -195,7 +194,6 @@ public class Board {
                         if (player.getFrame().hasFrameTile(tile)) {
                             player.getFrame().removeTile(tile);
                             board[row][col] = new Tiles(tile);
-                            System.out.println("In board - tiles is " + board[row][col].getLetter());
                             pos.add(row);pos.add(col);
                             row++;
                         } else {

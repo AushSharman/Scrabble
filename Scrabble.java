@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Scrabble {
@@ -7,7 +6,7 @@ public class Scrabble {
     private Player p1, p2;
     private int p1Turn ;
     private int p2Turn;
-    private char[] locs;
+//    private char[] locs;
     int counter;
     Scanner scanIn;
 
@@ -45,12 +44,13 @@ public class Scrabble {
                 char[] chars = s.toCharArray();
                 for (char letter : chars) {
                     if (letter != ' ') Frame.swap(player.getFrame(), letter);
+                    System.out.println(player.getPlayerName() + " now has the Frame " + player.getFrame());
                 }
-                    System.out.println(s + " has now the Frame - " + player.getFrame());
                 break;
             case "Challenge":
                 System.out.println("What word do you wish to challenge : ");
                 player.challenge(scanIn.nextLine(), (counter == p2Turn)? p1 : p2);
+                System.out.println(player.getPlayerName() + " now has " + player.getPlayerScore() + " points");
                 break;
             default:
                 board.getBoardInput(player);
@@ -62,10 +62,10 @@ public class Scrabble {
     public void playGame() {
 //        System.out.println("");
         getPlayerInput();
-        while (!Pool.isPoolEmpty() ) {
-            if (counter % 2 == 0) {
+        while (!Pool.isPoolEmpty() ) {      //Maintain a loop - so the game plays
+            if (counter % 2 == 0) {     //If counter is odd - then Player2 turn else Player1 turn
                 System.out.println(p1.getPlayerName() + "-" + p1.getFrame());
-                System.out.println("Enter User Command : [Place] [Challenge] [Quit] [Pass] [Exchange] [Place]");
+                System.out.println("Enter User Command : [Place] [Challenge] [Quit] [Pass] [Exchange] [Place]");    //Display Options for player to enter
                 String option = scanIn.next();
                 scanIn.nextLine();
                 executeOption(p1, option);
@@ -80,14 +80,12 @@ public class Scrabble {
             }
         }
     }
-
+//If you wish to play the Challenge Option - enter the letters as a String - e.g "I wish to challenge the word ASDF"
     public static void main(String[] args) {
         Scrabble s = new Scrabble();
         s.playGame();
     }
-    
-// When challenge called - Success -> Ask for input of Words -> Subtract from Player Score, Add words placed back into the Pool -> Therefore, need to know where the Tiles where placed
-    // TODO: 23/03/2020 Ensure that words are connecting on the board
+
 }
 
 
