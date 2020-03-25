@@ -168,12 +168,12 @@ public class Main extends Application implements EventHandler<ActionEvent>
 
         else if(event.getSource() == passButton)
         {
-            System.out.println("Pass Turn \n");
+            System.out.println("Passing Turn \n");
         }
 
         else if(event.getSource() == helpButton)
         {
-            System.out.println("Help Button Triggered \n");
+            System.out.println("Help : First tile to be placed at position <grid ref> and <across/down> using <word> from Frame .\n");
         }
 
         else if(event.getSource() == exchangeButton)
