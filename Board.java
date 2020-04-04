@@ -83,9 +83,6 @@ public class Board {
     public void calculatePoints(int wordSize, int row, int col, Player player, int placement) {
         int score = 0;
         int wordMult = 1;
-        //score if calculated by adding the points of the tiles individually
-        //so - if I get a double/triple letter - then - I must multiplly line 80 & 86 by 2/3 - Done
-        //so - if I get a word multiplier - then I must multiply score by 2/3 - Done
         if (placement == 1) {    //Find score Horizontally
             for (int index = 0; index < wordSize; index++) {
                 if (getMultipliers(row, col) == '@' || getMultipliers(row, col) == '+'){//Do Letter multipliers
@@ -155,13 +152,13 @@ public class Board {
                             return;
                         }
                     } else {
-                        System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col) + "- Try again");
+                        System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col).getLetter() + "- Try again");
                         setTiles(input, wordSize, wordPlacement, player);
                         return;
                     }
                     firstPlacement = false;
                 } else {
-                    if ((isOccupied(row, col) || canOverwriteTile(row, col, new Tiles(tile)) || isConnecting(row, col, wordSize, 1))) { //&& isConnecting()) {
+                    if ((isOccupied(row, col) || canOverwriteTile(row, col, new Tiles(tile)))) { //&& isConnecting()) {
                         if (player.getFrame().hasFrameTile(tile)) {  //Checks if the Frame has the required Tile to place it
                             player.getFrame().removeTile(tile);     //Removes the Tile from the PlayerFrame - Works perfect upto here
                             board[row][col] = new Tiles(tile);
@@ -173,7 +170,7 @@ public class Board {
                             return;
                         }
                     } else {
-                        System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col) + "- Try again");
+                        System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col).getLetter() + "- Try again");
                         setTiles(input, wordSize, wordPlacement, player);
                     }
                 }
@@ -202,17 +199,16 @@ public class Board {
                             return;
                         }
                     } else {
-                        System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col) + "- Try again");
+                        System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col).getLetter() + "- Try again");
                         setTiles(input, wordSize, wordPlacement, player);
                         return;
                     }
                     firstPlacement = false;
                 } else {
-                    if ((isOccupied(row, col) || canOverwriteTile(row, col, new Tiles(tile)) || isConnecting(row, col, wordSize, 2))) {//&& isConnecting()) { //If tilePos is occupied - ask for Positions again
+                    if ((isOccupied(row, col) || canOverwriteTile(row, col, new Tiles(tile)))) { //If tilePos is occupied - ask for Positions again
                         if (player.getFrame().hasFrameTile(tile)) {
                             player.getFrame().removeTile(tile);
                             board[row][col] = new Tiles(tile);
-                            System.out.println("In board - tiles is " + board[row][col].getLetter());
                             pos.add(row);pos.add(col);
                             row++;
                         } else {
@@ -221,7 +217,7 @@ public class Board {
                             return;
                         }
                     } else {
-                        System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col) + "- Try again");
+                        System.out.println("The position chosen is occuipied with the letter - " + getBoardTile(row, col).getLetter() + "- Try again");
                         setTiles(input, wordSize, wordPlacement, player);
                         return;
                     }

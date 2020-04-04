@@ -1,4 +1,6 @@
 import javax.naming.NameParser;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 
 //Daiana Morjolic .
@@ -11,6 +13,7 @@ public class Player
 	private String playerName;
 	private int playerScore;
 	private Frame playerFrame;
+//	private Scanner readFile;
 
 	//Constructor :
 	public Player(String playerName) {
@@ -62,14 +65,26 @@ public class Player
 	//method to trigger the randomly select method 
 	//that allows each player to randomly select tiles from the pool .
 
-	public void challenge(String word, Player player){
-		player.decreaseScore(Pool.getWordScore(word) );
+	public void challenge(String word, Player player) {
+		try {
+			Scanner readFile = new Scanner(new File("C:\\Users\\Ayush Larma\\Downloads\\dictionary.txt"));
+			while (readFile.hasNext()){
+				System.out.println(readFile.next());
+			}
+			readFile.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+
+		/*player.decreaseScore(Pool.getWordScore(word) );
 		for (int index =0; index < word.length(); index++){
 			Pool.addTileBack(new Tiles(word.charAt(index)));
 		}
 		for (int index = 0; index < Board.pos.size(); index=index+2){
 			Board.removeTileFromBoard(Board.pos.get(index), Board.pos.get(index+1));
-		}
+		}*/
+
 	}
 	
 	//Resetting Player Names :
@@ -79,5 +94,11 @@ public class Player
 		playerFrame = null;
 	}
 
+	public static void main(String[] args) {
+		Pool pool = new Pool();
+		Board board = new Board();
+		Player player = new Player("ji");
+		player.challenge("HI", player);
+	}
 
 }

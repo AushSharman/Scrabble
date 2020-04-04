@@ -1,4 +1,3 @@
-package sample;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -55,7 +54,7 @@ public class Main extends Application implements EventHandler<ActionEvent>
             for(int col = 0; col < size; col++)
             {
                 StackPane square = new StackPane();
-                var style_maker = new StringBuilder();
+                StringBuilder style_maker = new StringBuilder();
 
                 //Triple Word Score :
                 if (row == 0 && col == 0 || row == 0 && col == 7 || row == 0 && col == 14 || row == 7 && col == 0 ||
