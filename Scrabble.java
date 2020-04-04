@@ -1,14 +1,14 @@
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Scrabble {
+//    public static long[] words;
+//    private static int[] words;
     private Pool pool;
     private Board board;
     private Player p1, p2;
-    private int p1Turn ;
-    private int p2Turn;
-//    private char[] locs;
-    int counter;
+    public static int p1Turn ;
+    public static int p2Turn;
+    public static int counter;
     Scanner scanIn;
 
     //Game is over when all the tiles from the Pool is drawn
@@ -20,6 +20,7 @@ public class Scrabble {
         scanIn = new Scanner(System.in);
     }
 
+
     public void getPlayerInput() {
         System.out.println("Enter Player-One Name : ");
         String player1 = scanIn.next();
@@ -29,6 +30,7 @@ public class Scrabble {
         p1 = new Player(player1);
         p2 = new Player(player2);
     }
+
 
     public void executeOption(Player player, String opt) {
         switch (opt) {
@@ -50,8 +52,11 @@ public class Scrabble {
                 break;
             case "Challenge":
                 System.out.println("What word do you wish to challenge : ");
-                player.challenge(scanIn.nextLine(), (counter == p2Turn)? p1 : p2);
-                System.out.println(player.getPlayerName() + " now has " + player.getPlayerScore() + " points");
+                String word = scanIn.nextLine();
+                Player.challenge(word, (counter == p2Turn)? p1 : p2);
+//                if (Player.isWordInFile(word))
+                System.out.println((counter == p2Turn)? p1.getPlayerName(): p2.getPlayerName() + " now has " + player.getPlayerScore() + " points");
+
                 break;
             default:
                 board.getBoardInput(player);
@@ -66,7 +71,7 @@ public class Scrabble {
         while (!Pool.isPoolEmpty() ) {      //Maintain a loop - so the game plays
             if (counter % 2 == 0) {     //If counter is odd - then Player2 turn else Player1 turn
                 System.out.println(p1.getPlayerName() + "-" + p1.getFrame());
-                System.out.println("Enter User Command : [Place] [Challenge] [Quit] [Pass] [Exchange] [Place]");    //Display Options for player to enter
+                System.out.println("Enter User Command : [Place] [Challenge] [Quit] [Pass] [Exchange]");    //Display Options for player to enter
                 String option = scanIn.next();
                 scanIn.nextLine();
                 executeOption(p1, option);
@@ -84,6 +89,7 @@ public class Scrabble {
 //If you wish to play the Challenge Option - enter the letters as a String - e.g "I wish to challenge the word ASDF"
     public static void main(String[] args) {
         Scrabble s = new Scrabble();
+//        System.out.println(words);
         s.playGame();
     }
 
