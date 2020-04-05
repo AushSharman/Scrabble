@@ -1,11 +1,12 @@
 import java.util.Scanner;
 
-public class Scrabble {
-//    public static long[] words;
+public class Scrabble
+{
+    //    public static long[] words;
 //    private static int[] words;
     private Pool pool;
     private Board board;
-    private Player p1, p2;
+    public static Player p1, p2;
     public static int p1Turn ;
     public static int p2Turn;
     public static int counter;
@@ -40,6 +41,14 @@ public class Scrabble {
                 break;
             case "Pass":    //Pass option works fine - SOUT a message and switch counter value
                 System.out.println("Turn is now - " + (!(counter % 2 == 0) ? p1.getPlayerName() : p2.getPlayerName()));
+                if(counter == p1Turn)
+                {
+                    counter = p2Turn;
+                }
+                else
+                {
+                    counter = p1Turn;
+                }
                 break;
             case "Exchange":    //Need to write the exchange method - Frame.swap()
                 System.out.print("What letters would you like to exchange from your Frame");
@@ -48,20 +57,60 @@ public class Scrabble {
                 for (char letter : chars) {
                     if (letter != ' ') Frame.swap(player.getFrame(), letter);
                     System.out.println(player.getPlayerName() + " now has the Frame " + player.getFrame());
+
+                }
+                if(counter == p1Turn)
+                {
+                    counter = p2Turn;
+                }
+                else
+                {
+                    counter = p1Turn;
                 }
                 break;
             case "Challenge":
                 System.out.println("What word do you wish to challenge : ");
                 String word = scanIn.nextLine();
                 Player.challenge(word, (counter == p2Turn)? p1 : p2);
-//                if (Player.isWordInFile(word))
-                System.out.println((counter == p2Turn)? p1.getPlayerName(): p2.getPlayerName() + " now has " + player.getPlayerScore() + " points");
+                if (Player.isWordInFile(word) == true)
+                {
+                    if(counter == p1Turn)
+                    {
+                        counter = p1Turn;
+                    }
+                    else
+                    {
+                        counter = p2Turn;
+                    }
+                }
+                else
+                {
+                    if(counter == p1Turn)
+                    {
+                        counter = p2Turn;
+                    }
+                    else
+                    {
+                        counter = p1Turn;
+                    }
+                }
+
+                System.out.println(!(counter == p2Turn)? p1.getPlayerName(): p2.getPlayerName() + " now has " + player.getPlayerScore() + " points");
 
                 break;
             default:
                 board.getBoardInput(player);
                 board.display();
                 System.out.println(player.getPlayerName() + " has " + player.getPlayerScore() + " points");
+                if(counter == p1Turn)
+                {
+                    counter = p2Turn;
+                }
+                else
+                {
+                    counter = p1Turn;
+                }
+                break;
         }
     }
 
@@ -75,24 +124,21 @@ public class Scrabble {
                 String option = scanIn.next();
                 scanIn.nextLine();
                 executeOption(p1, option);
-                counter = p2Turn;
             } else{
                 System.out.println(p2.getPlayerName() + "-" + p2.getFrame());
                 System.out.print("Enter User Command :[Place] [Challenge] [Quit] [Pass] [Exchange] ");
                 String option = scanIn.next();
                 scanIn.nextLine();
                 executeOption(p2, option);
-                counter = p1Turn;
             }
         }
     }
-//If you wish to play the Challenge Option - enter the letters as a String - e.g "I wish to challenge the word ASDF"
+    //If you wish to play the Challenge Option - enter the letters as a String - e.g "I wish to challenge the word ASDF"
     public static void main(String[] args) {
         Scrabble s = new Scrabble();
 //        System.out.println(words);
         s.playGame();
     }
-
 }
 
 
