@@ -102,7 +102,7 @@ public class Bot0 implements BotAPI {
 //        }
 //    }
 
-    /*public ArrayList<String> makeWord() {//Get the Player Frame and make combinations of words
+    public ArrayList<String> makeWord() {//Get the Player Frame and make combinations of words
         //To make Combinations of Words -> make subsets of the Frame
         Frame playerFrame = s.getCurrentPlayer().getFrame();
         ArrayList<Tile> k = playerFrame.getTiles();
@@ -110,7 +110,7 @@ public class Bot0 implements BotAPI {
         ArrayList<String> computedWords = permutation(tileToString(k));
 
         return computedWords;
-    }*/
+    }
 
 
     public String getCommand() {
@@ -141,7 +141,6 @@ public class Bot0 implements BotAPI {
     }
 
     public static void main(String[] args) {
-//        System.out.println(Bot0.permutation("AOLPEWR"));
 
         System.out.println(s);
 
