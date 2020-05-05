@@ -1,129 +1,123 @@
-import java.util.Scanner;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
-public class Scrabble
-{
-    //    public static long[] words;
-//    private static int[] words;
-    private Pool pool;
-    private Board board;
-    public static Player p1, p2;
-    public static int p1Turn ;
-    public static int p2Turn;
-    public static int counter;
-    Scanner scanIn;
+public class Scrabble {
 
-    //Game is over when all the tiles from the Pool is drawn
-    public Scrabble() {
-        pool = new Pool();
-        board = new Board();
+	public static int NUM_PLAYERS = 2;
+	private static int ZERO_SCORE_PLAY_LIMIT = 6;
 
-        p2Turn = 1;
-        scanIn = new Scanner(System.in);
-    }
+	private Board board;
+	private Pool pool;
+	private ArrayList<Player> players;
+	private int currentPlayerId;
+	private int numZeroScorePlays;
+	private Dictionary dictionary;
+	ArrayList<Word> latestWords;
+	int latestPoints;
+	ArrayList<Tile> latestRefill;
 
+	Scrabble() throws FileNotFoundException {
+		board = new Board();
+		pool = new Pool();
+		players = new ArrayList<>();
+		for (int i = 0; i < NUM_PLAYERS; i++) {
+			players.add(new Player(i));
+		}
+		for (Player player : players) {
+			player.getFrame().refill(pool);
+		}
+		currentPlayerId = 0;
+		numZeroScorePlays = 0;
+		dictionary = new Dictionary();
+	}
 
-    public void getPlayerInput() {
-        System.out.println("Enter Player-One Name : ");
-        String player1 = scanIn.next();
-        System.out.println("Enter Player-Two Name");
-        String player2 = scanIn.next();
-        System.out.println(player1 + " VS " + player2);
-        p1 = new Player(player1);
-        p2 = new Player(player2);
-    }
+	public int getCurrentPlayerId() {
+		return currentPlayerId;
+	}
 
+	public Player getCurrentPlayer() {
+		return players.get(currentPlayerId);
+	}
 
-    public void executeOption(Player player, String opt) {
-        switch (opt) {
-            case "Quit":
-                System.out.println("Quitting Game");
-                System.exit(-1);
-                break;
-            case "Pass":    //Pass option works fine - SOUT a message and switch counter value
-                System.out.println("Turn is now - " + (!(counter % 2 == 0) ? p1.getPlayerName() : p2.getPlayerName()));
-                if(counter == p1Turn) {
-                    counter = p2Turn;
-                }
-                else {
-                    counter = p1Turn;
-                }
-                break;
-            case "Exchange":    //Need to write the exchange method - Frame.swap()
-                System.out.print("What letters would you like to exchange from your Frame");
-                String s = scanIn.nextLine();
-                char[] chars = s.toCharArray();
-                for (char letter : chars) {
-                    if (letter != ' ') Frame.swap(player.getFrame(), letter);
-                }
-                    System.out.println(player.getPlayerName() + " now has the Frame " + player.getFrame());
-                if(counter == p1Turn) {
-                    counter = p2Turn;
-                }
-                else {
-                    counter = p1Turn;
-                }
-                break;
-            case "Challenge":
-                System.out.println("What word do you wish to challenge : ");
-                String word = scanIn.nextLine();
-                Player.challenge(word, (counter == p2Turn)? p1 : p2);
-                if (!Player.isWordInFile(word)) {
-                    if(counter == p1Turn) {
-                        counter = p1Turn;
-                    }
-                    else{
-                        counter = p2Turn;
-                    }
-                }
-                else{
-                    if(counter == p1Turn) {
-                        counter = p2Turn;
-                    }
-                    else{
-                        counter = p1Turn;
-                    }
-                }
+	public Player getOpposingPlayer() {
+		if (currentPlayerId==0) {
+			return players.get(1);
+		} else {
+			return players.get(0);
+		}
+	}
 
-                System.out.println(!(counter == p2Turn)? p1.getPlayerName(): p2.getPlayerName() + " now has " + player.getPlayerScore() + " points");
+	public void turnOver() {
+		if (currentPlayerId == NUM_PLAYERS - 1) {
+			currentPlayerId = 0;
+		} else {
+			currentPlayerId++;
+		}
+	}
 
-                break;
-            default:
-                board.getBoardInput(player);
-                board.display();
-                System.out.println(player.getPlayerName() + " has " + player.getPlayerScore() + " points");
-                if(counter == p1Turn) {
-                    counter = p2Turn;
-                }
-                else {
-                    counter = p1Turn;
-                }
-                break;
-        }
-    }
+	public Board getBoard() {
+		return board;
+	}
 
-    public void playGame() {
-//        System.out.println("");
-        getPlayerInput();
-        while (!Pool.isPoolEmpty() ) {      //Maintain a loop - so the game plays
-            if (counter % 2 == 0) {     //If counter is odd - then Player2 turn else Player1 turn
-                System.out.println(p1.getPlayerName() + "-" + p1.getFrame());
-                System.out.println("Enter User Command : [Place] [Challenge] [Quit] [Pass] [Exchange]");    //Display Options for player to enter
-                String option = scanIn.next();
-                scanIn.nextLine();
-                executeOption(p1, option);
-            } else{
-                System.out.println(p2.getPlayerName() + "-" + p2.getFrame());
-                System.out.print("Enter User Command :[Place] [Challen] [Quit] [Pass] [Exchange] ");
-                String option = scanIn.next();
-                scanIn.nextLine();
-                executeOption(p2, option);
-            }
-        }
-        System.out.println("Game ended! Winner is " + ((p1.getPlayerScore() > p2.getPlayerScore())? p1.getPlayerName(): p2.getPlayerName()));
-    }
-    //If you wish to play the Challenge Option - enter the letters as a String - e.g "I wish to challenge the word ASDF"
-    public static void main(String[] args) {
-        Scrabble s = new Scrabble();
-        s.playGame();
-    }
+	public Pool getPool() {
+		return pool;
+	}
+
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+
+	public void zeroScorePlay() {
+		numZeroScorePlays++;
+	}
+
+	public void scorePlay() {
+		numZeroScorePlays = 0;
+	}
+
+	public boolean isZeroScorePlaysOverLimit() {
+		return numZeroScorePlays >= ZERO_SCORE_PLAY_LIMIT;
+	}
+
+	public void adjustScores() {
+		for (Player player : players) {
+			player.adjustScore();
+		}
+	}
+
+	public Dictionary getDictionary() {
+		return dictionary;
+	}
+
+	public void play(Word word) {
+		board.place(getCurrentPlayer().getFrame(), word);
+		latestWords = board.getAllWords(word);
+		latestPoints = board.getAllPoints(latestWords);
+		getCurrentPlayer().addPoints(latestPoints);
+		latestRefill = getCurrentPlayer().getFrame().refill(pool);
+		scorePlay();
+	}
+
+	public void undoPlay() {
+		ArrayList<Tile> tilesPlayed = board.pickupLatestWord();
+		getOpposingPlayer().getFrame().returnToPool(pool, latestRefill);
+		getOpposingPlayer().getFrame().addTiles(tilesPlayed);
+		getOpposingPlayer().subtractPoints(latestPoints);
+	}
+
+	public int getLatestPoints() {
+		return latestPoints;
+	}
+
+	public ArrayList<Word> getLatestWords() {
+		return latestWords;
+	}
+
+	public boolean framesAreEmpty() {
+		boolean empty = true;
+		for (Player player : players) {
+			empty = empty && player.getFrame().isEmpty();
+		}
+		return empty;
+	}
 }
