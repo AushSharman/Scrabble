@@ -85,7 +85,7 @@ public class UserInterface implements UserInterfaceAPI {
         // rows are numbered from zero at the top
         // columns are numbers from zero at the left
         boardPane.setGridLinesVisible(true);
-        int squareSize = 50;
+        int squareSize = 25;
         for (int r = 0; r < Board.BOARD_SIZE; r++) {
             boardPane.getColumnConstraints().add(new ColumnConstraints(squareSize));
             boardPane.getRowConstraints().add(new RowConstraints(squareSize));
