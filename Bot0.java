@@ -1,9 +1,5 @@
-import com.sun.corba.se.impl.encoding.CodeSetConversion;
-
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 import java.util.Scanner;
 
 public class Bot0 implements BotAPI {
@@ -19,6 +15,7 @@ public class Bot0 implements BotAPI {
     private BoardAPI board;
     private UserInterfaceAPI info;
     private DictionaryAPI dictionary;
+    private Frame frame;
     private int turnCount;
     private static Scrabble s;
     private static Scanner scan;
@@ -29,12 +26,13 @@ public class Bot0 implements BotAPI {
         this.board = board;
         this.info = ui;
         this.dictionary = dictionary;
+        frame = new Frame();
         turnCount = 0;
         s = new Scrabble();
     }
 
 
-
+    public Frame getFrame() { return frame; }
 
     //Take in the board, frame,
     //ABC - {A, ACB, ABC, B, BAC, BCA, C, CAB, CBA} 2^n + 1
@@ -96,20 +94,40 @@ public class Bot0 implements BotAPI {
         }
     }
 
-//    public static boolean dictionaryCheck(ArrayList<String> word) {
-//        for (String s : word){
-//            if ()
-//        }
-//    }
+    public ArrayList<String> dictionaryCheck(ArrayList<String> word)
+    {
+        ArrayList<String> checkedWords = new ArrayList<>();
 
-    public ArrayList<String> makeWord() {//Get the Player Frame and make combinations of words
+        while(!word.isEmpty())
+        {
+            for (String s : word)
+            {
+                ArrayList<Word> wordArr = new ArrayList<>();
+                Word tmp = new Word(0, 1, true, s);
+                wordArr.add(0, tmp);
+
+                if (dictionary.areWords(wordArr)) { checkedWords.add(s); }
+                else { System.out.println("Word not found"); }
+
+                wordArr.remove(0);
+            }
+        }
+
+        return checkedWords;
+    }
+
+    public ArrayList<String> makeWord(String botFrame) {//Get the Player Frame and make combinations of words
         //To make Combinations of Words -> make subsets of the Frame
-        Frame playerFrame = s.getCurrentPlayer().getFrame();
-        ArrayList<Tile> k = playerFrame.getTiles();
+        //Frame botFrame = s.getCurrentPlayer().getFrame();
 
-        ArrayList<String> computedWords = permutation(tileToString(k));
+        //ArrayList<Tile> k = botFrame.getTiles();
 
-        return computedWords;
+        ArrayList<String> wordArr = new ArrayList<>();
+        //wordArr.add(0, botFrame);
+         wordArr = permutation(botFrame);
+        //ArrayList<String> computedWords = permutation(tileToString(k));
+
+        return wordArr;
     }
 
 
@@ -119,7 +137,7 @@ public class Bot0 implements BotAPI {
         String command = "";
         switch (turnCount) {
             case 0:
-                command = "NAME Bot0";
+                command = "NAME BarelyManaging";
                 break;
             case 1:
                 command = "Pass";
@@ -132,17 +150,46 @@ public class Bot0 implements BotAPI {
             case 4:
                 command = "POOL";
                 break;
+            case 5:
+                //String s = makeWord().toString();
+                command = "H8 A" + s;
+                break;
             default:
-//                command = makeWord().toString();
+               //command = makeWord().toString();
+                command = checkMethods();
                 break;
         }
         turnCount++;
         return command;
     }
 
-    public static void main(String[] args) {
+    public String checkMethods()
+    {
+        String botFrame = me.getFrameAsString().replaceAll("[^a-zA-Z0-9_]", "");
 
-        System.out.println(s);
+        System.out.println("Frame before changes : " + botFrame);
+
+        if(botFrame.contains("_"))
+        {
+            botFrame = botFrame.replaceAll("_", "");
+
+        }
+
+        ArrayList<String> permArr = permutation(botFrame);
+
+        System.out.println("After permutation");
+
+        //This runs in a loop , need to figure out in dictionaryCheck how to convert string array list in word array list
+        //in order to use areWords from dictionary .
+        System.out.println(dictionaryCheck(permArr));
+
+        System.out.println("After dictionary check ");
+
+        return botFrame;
+    }
+
+    public static void main(String[] args)
+    {
 
     }
 
