@@ -1,9 +1,8 @@
 # Scrabble
 GUI Implementation of the board game **Scrabble**
-
 ![Gui](img/gui.png)
 
-##Usage
+## Usage
 Ensure that you first have the [Java JDK](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html),
 not the SE.
 
@@ -18,13 +17,13 @@ site and add the VM options.
 
 Follow the link to [setup](https://www.jetbrains.com/help/idea/javafx.html)
 
-##Working Process
+## Working Process
 This was our first ever team project(with 3). Following multiple
 sprints and daily standups.
 
 The art of OOP was used to the best of its abilites and 
 Git and Github were used extensively 
 
-##Contributions
+## Contributions
 Made by myself, [Diana](https://github.com/daianamorjolic) and [Suzanne](https://github.com/S-u-z)
 
